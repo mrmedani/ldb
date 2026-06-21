@@ -1,0 +1,73 @@
+<?php
+
+namespace App\Livewire\Public;
+
+use App\Models\Office;
+use App\Models\Setting;
+use App\Models\Wilaya;
+use Livewire\Component;
+use Livewire\WithPagination;
+
+class OfficeSearch extends Component
+{
+    use WithPagination;
+
+    public string $search = '';
+    public string $sortField = 'display_order';
+    public string $sortDirection = 'asc';
+
+    protected $queryString = [
+        'search' => ['except' => ''],
+    ];
+
+    public function updatingSearch(): void
+    {
+        $this->resetPage();
+    }
+
+    public function sortBy(string $field): void
+    {
+        if ($this->sortField === $field) {
+            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sortField = $field;
+            $this->sortDirection = 'asc';
+        }
+    }
+
+    public function getOfficesProperty()
+    {
+        return Office::with('wilaya')
+            ->visible()
+            ->when($this->search, fn($q) => $q->where(function ($q) {
+                $q->where('company_name', 'like', "%{$this->search}%")
+                  ->orWhere('phone', 'like', "%{$this->search}%")
+                  ->orWhereHas('wilaya', fn($q) => $q->where('name', 'like', "%{$this->search}%"));
+            }))
+            ->orderBy($this->sortField, $this->sortDirection)
+            ->paginate(20);
+    }
+
+    public function getSettingsProperty()
+    {
+        return Setting::getSettings();
+    }
+
+    public function getStatsProperty(): array
+    {
+        return [
+            'wilayas' => Wilaya::count(),
+            'offices' => Office::visible()->count(),
+            'partners' => Office::visible()->distinct('company_name')->count('company_name'),
+        ];
+    }
+
+    public function render()
+    {
+        return view('livewire.public.office-search', [
+            'offices' => $this->offices,
+            'settings' => $this->settings,
+            'stats' => $this->stats,
+        ]);
+    }
+}
