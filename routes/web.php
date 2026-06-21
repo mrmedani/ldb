@@ -6,13 +6,6 @@ use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Public\HomeController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/install', [App\Http\Controllers\InstallController::class, 'index'])->name('install.index');
-Route::get('/install/database', [App\Http\Controllers\InstallController::class, 'database'])->name('install.database');
-Route::post('/install/migration', [App\Http\Controllers\InstallController::class, 'runMigration'])->name('install.migration');
-Route::get('/install/admin', [App\Http\Controllers\InstallController::class, 'admin'])->name('install.admin');
-Route::post('/install/admin', [App\Http\Controllers\InstallController::class, 'saveAdmin'])->name('install.save-admin');
-Route::get('/install/complete', [App\Http\Controllers\InstallController::class, 'complete'])->name('install.complete');
-
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
