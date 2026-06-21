@@ -8,7 +8,7 @@
     <meta name="color-scheme" content="light">
     <meta name="theme-color" content="#F8FAFC">
     <title>{{ config('app.name', 'Chronorex Express') }} - Auth</title>
-    <link rel="icon" type="image/x-icon" href="{{ $settings->favicon_url ?? asset('favicon.ico') }}">
+    <link rel="icon" href="{{ $settings->favicon_url ?? asset('favicon.ico') }}">
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800&display=swap" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
