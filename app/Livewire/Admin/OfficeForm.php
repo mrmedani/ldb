@@ -44,8 +44,10 @@ class OfficeForm extends Component
         if ($value) {
             $wilaya = Wilaya::find($value);
             $this->wilaya_code = $wilaya?->code ?? '';
+            $this->display_order = (int) ($wilaya?->code ?? 0);
         } else {
             $this->wilaya_code = '';
+            $this->display_order = 0;
         }
     }
 

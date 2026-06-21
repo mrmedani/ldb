@@ -56,9 +56,9 @@
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div class="space-y-1.5 group">
-                    <label class="text-sm font-semibold text-gray-700 group-focus-within:text-primary transition-colors">Ordre d'affichage</label>
-                    <input type="number" wire:model="display_order" min="0" class="w-full px-4 py-3 text-sm border-2 border-transparent rounded-xl bg-gray-50/50 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary focus:bg-white hover:bg-gray-100/80 transition-all duration-300" />
+                <div class="space-y-1.5">
+                    <label class="text-sm font-semibold text-gray-700">Ordre d'affichage</label>
+                    <input type="number" readonly value="{{ $display_order }}" class="w-full px-4 py-3 text-sm border-2 border-transparent rounded-xl bg-gray-100/80 text-gray-500 cursor-not-allowed font-medium" />
                 </div>
 
                 <div class="space-y-1.5 flex flex-col justify-end">
