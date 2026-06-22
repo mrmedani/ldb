@@ -133,8 +133,8 @@
                                             {{ $office->phone }}
                                         </a>
                                         @if($office->phone_secondary)
-                                            <a href="tel:{{ $office->phone_secondary }}" class="text-xs text-gray-400 hover:text-primary transition-colors flex items-center gap-1.5">
-                                                <i data-lucide="phone" class="w-3 h-3 text-gray-400"></i>
+                                            <a href="tel:{{ $office->phone_secondary }}" class="text-sm font-semibold text-gray-700 hover:text-primary transition-colors flex items-center gap-1.5">
+                                                <i data-lucide="phone" class="w-3.5 h-3.5 text-gray-400"></i>
                                                 {{ $office->phone_secondary }}
                                             </a>
                                         @endif
@@ -216,7 +216,8 @@
                                     {{ $office->phone }}
                                 </a>
                                 @if($office->phone_secondary)
-                                    <a href="tel:{{ $office->phone_secondary }}" class="text-xs text-gray-400 hover:text-primary transition-colors flex items-center gap-2 pl-6">
+                                    <a href="tel:{{ $office->phone_secondary }}" class="text-sm font-semibold text-gray-700 hover:text-primary transition-colors flex items-center gap-2">
+                                        <i data-lucide="phone" class="w-4 h-4 text-gray-400"></i>
                                         {{ $office->phone_secondary }}
                                     </a>
                                 @endif
