@@ -54,9 +54,10 @@
         </div>
     </div>
 
-    <!-- Results Table -->
+    <!-- Results Table & Mobile Cards -->
     <div class="glass-panel rounded-2xl border border-border/50 shadow-premium overflow-hidden">
-        <div class="overflow-x-auto">
+        <!-- Desktop Table View -->
+        <div class="overflow-x-auto hidden sm:block">
             <table class="w-full text-sm text-left">
                 <thead>
                     <tr class="bg-gray-50/50 border-b border-border/50 text-xs uppercase tracking-wider text-gray-500 font-bold">
@@ -172,6 +173,82 @@
                 </tbody>
             </table>
         </div>
+
+        <!-- Mobile Cards List View -->
+        <div class="block sm:hidden divide-y divide-border/50">
+            @forelse($offices as $office)
+                <div class="p-5 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="inline-flex items-center gap-2 font-bold text-text">
+                            <i data-lucide="map-pin" class="w-4 h-4 text-primary opacity-60"></i>
+                            {{ $office->wilaya->name }}
+                        </span>
+                        @if($settings->show_code)
+                            <span class="font-mono text-xs font-bold text-gray-500 bg-gray-100/80 border border-gray-200/50 px-2 py-0.5 rounded-md">{{ $office->wilaya->code }}</span>
+                        @endif
+                    </div>
+                    
+                    <div class="flex items-center justify-between text-sm">
+                        <span class="font-semibold text-gray-500">Commune</span>
+                        <span class="font-bold text-gray-800">{{ $office->commune?->name ?? '-' }}</span>
+                    </div>
+
+                    @if($settings->show_company)
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="font-semibold text-gray-500">Entreprise</span>
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-6 rounded-lg bg-primary/10 text-primary font-bold flex items-center justify-center text-[10px]">
+                                    {{ substr($office->company_name, 0, 1) }}
+                                </div>
+                                <span class="font-bold text-text">{{ $office->company_name }}</span>
+                            </div>
+                        </div>
+                    @endif
+
+                    @if($settings->show_phone)
+                        <div class="flex flex-col gap-2 pt-2 border-t border-border/20">
+                            <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Téléphone</span>
+                            <div class="flex flex-col gap-1">
+                                <a href="tel:{{ $office->phone }}" class="text-sm font-semibold text-gray-700 hover:text-primary transition-colors flex items-center gap-2">
+                                    <i data-lucide="phone" class="w-4 h-4 text-gray-400"></i>
+                                    {{ $office->phone }}
+                                </a>
+                                @if($office->phone_secondary)
+                                    <a href="tel:{{ $office->phone_secondary }}" class="text-xs text-gray-400 hover:text-primary transition-colors flex items-center gap-2 pl-6">
+                                        {{ $office->phone_secondary }}
+                                    </a>
+                                @endif
+                            </div>
+                        </div>
+                    @endif
+
+                    @if($settings->show_address)
+                        <div class="flex flex-col gap-1 pt-2 border-t border-border/20">
+                            <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Adresse</span>
+                            <p class="text-sm text-gray-500 leading-relaxed">{{ $office->address }}</p>
+                        </div>
+                    @endif
+
+                    @if($settings->show_maps && $office->google_maps)
+                        <div class="pt-2">
+                            <a href="{{ $office->google_maps }}" target="_blank" rel="noopener noreferrer" class="btn-secondary !py-2.5 w-full text-xs flex items-center justify-center gap-2 hover:!bg-primary hover:!text-white hover:!border-primary">
+                                <i data-lucide="navigation" class="w-4 h-4"></i>
+                                Itinéraire Maps
+                            </a>
+                        </div>
+                    @endif
+                </div>
+            @empty
+                <div class="px-6 py-16 text-center text-gray-500">
+                    <div class="w-20 h-20 bg-gray-50 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-border">
+                        <i data-lucide="inbox" class="w-10 h-10 text-gray-300"></i>
+                    </div>
+                    <p class="text-lg font-bold text-gray-700">Aucun bureau trouvé</p>
+                    <p class="text-gray-500 mt-1 max-w-sm mx-auto leading-relaxed">Aucun résultat ne correspond à votre recherche. Veuillez réessayer avec d'autres termes.</p>
+                </div>
+            @endforelse
+        </div>
+        
         @if($offices->hasPages())
             <div class="px-6 py-4 border-t border-border/50 bg-gray-50/30">
                 {{ $offices->links(data: ['scrollTo' => false]) }}

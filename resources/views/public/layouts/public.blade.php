@@ -44,10 +44,6 @@
                             <a href="{{ url('/dashboard') }}" class="text-sm font-semibold text-gray-600 hover:text-primary transition-colors flex items-center gap-1">
                                 <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Tableau de bord
                             </a>
-                        @else
-                            <a href="{{ route('login') }}" class="btn-primary py-2.5 px-6">
-                                Espace Admin
-                            </a>
                         @endauth
                     @endif
                 </div>
