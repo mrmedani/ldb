@@ -24,55 +24,70 @@ new class extends Component
 }; ?>
 
 <section class="space-y-6">
-    <header>
-        <h2 class="text-lg font-medium text-gray-900">
-            {{ __('Delete Account') }}
-        </h2>
-
-        <p class="mt-1 text-sm text-gray-600">
-            {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.') }}
-        </p>
+    <header class="flex items-center gap-3 mb-6">
+        <div class="w-10 h-10 rounded-xl bg-red-50 text-red-600 flex items-center justify-center shrink-0">
+            <i data-lucide="alert-triangle" class="w-5 h-5"></i>
+        </div>
+        <div>
+            <h2 class="text-lg font-bold text-text">
+                Supprimer le Compte
+            </h2>
+            <p class="text-sm text-gray-500 font-medium mt-0.5">
+                Une fois votre compte supprimé, toutes ses ressources et données seront définitivement perdues.
+            </p>
+        </div>
     </header>
 
-    <x-danger-button
-        x-data=""
-        x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')"
-    >{{ __('Delete Account') }}</x-danger-button>
+    <div>
+        <button
+            x-data=""
+            x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')"
+            class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-red-50 text-red-700 border border-red-200 rounded-lg text-sm font-semibold shadow-sm hover:bg-red-600 hover:text-white hover:border-red-600 hover:-translate-y-0.5 transition-all duration-200 active:scale-95 active:translate-y-0"
+        >
+            <i data-lucide="trash-2" class="w-4 h-4"></i>
+            Supprimer le compte
+        </button>
+    </div>
 
     <x-modal name="confirm-user-deletion" :show="$errors->isNotEmpty()" focusable>
-        <form wire:submit="deleteUser" class="p-6">
+        <form wire:submit="deleteUser" class="p-6 sm:p-8 space-y-6">
 
-            <h2 class="text-lg font-medium text-gray-900">
-                {{ __('Are you sure you want to delete your account?') }}
-            </h2>
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-red-50 text-red-600 flex items-center justify-center shrink-0">
+                    <i data-lucide="alert-triangle" class="w-5 h-5"></i>
+                </div>
+                <h2 class="text-lg font-bold text-text">
+                    Êtes-vous sûr de vouloir supprimer votre compte ?
+                </h2>
+            </div>
 
-            <p class="mt-1 text-sm text-gray-600">
-                {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.') }}
+            <p class="text-sm text-gray-500 font-medium leading-relaxed">
+                Une fois votre compte supprimé, toutes ses ressources et données seront définitivement perdues. Veuillez entrer votre mot de passe pour confirmer la suppression définitive.
             </p>
 
-            <div class="mt-6">
-                <x-input-label for="password" value="{{ __('Password') }}" class="sr-only" />
-
-                <x-text-input
+            <div class="space-y-1.5 group">
+                <label for="password" class="label-modern group-focus-within:text-primary">Mot de passe</label>
+                <input
                     wire:model="password"
                     id="password"
                     name="password"
                     type="password"
-                    class="mt-1 block w-3/4"
-                    placeholder="{{ __('Password') }}"
+                    class="input-modern max-w-md"
+                    placeholder="Entrez votre mot de passe pour confirmer"
+                    required
                 />
-
                 <x-input-error :messages="$errors->get('password')" class="mt-2" />
             </div>
 
-            <div class="mt-6 flex justify-end">
-                <x-secondary-button x-on:click="$dispatch('close')">
-                    {{ __('Cancel') }}
-                </x-secondary-button>
+            <div class="flex justify-end gap-3 pt-4 border-t border-border/50">
+                <button type="button" x-on:click="$dispatch('close')" class="btn-secondary">
+                    Annuler
+                </button>
 
-                <x-danger-button class="ms-3">
-                    {{ __('Delete Account') }}
-                </x-danger-button>
+                <button type="submit" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-red-600 text-white rounded-lg text-sm font-semibold shadow-sm hover:bg-red-700 hover:-translate-y-0.5 transition-all duration-200 active:scale-95 active:translate-y-0">
+                    <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    Confirmer la suppression
+                </button>
             </div>
         </form>
     </x-modal>

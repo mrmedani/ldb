@@ -17,6 +17,17 @@ class SettingController extends Controller
     public function update(Request $request)
     {
         $data = $request->validate([
+            'site_name' => 'nullable|string|max:100',
+            'meta_description' => 'nullable|string|max:500',
+            'hero_badge' => 'nullable|string|max:100',
+            'hero_title' => 'nullable|string|max:500',
+            'hero_subtitle' => 'nullable|string|max:1000',
+            'search_placeholder' => 'nullable|string|max:200',
+            'footer_copyright' => 'nullable|string|max:200',
+            'footer_tagline' => 'nullable|string|max:200',
+            'stats_wilayas_label' => 'nullable|string|max:100',
+            'stats_offices_label' => 'nullable|string|max:100',
+            'stats_partners_label' => 'nullable|string|max:100',
             'show_code' => 'boolean',
             'show_company' => 'boolean',
             'show_phone' => 'boolean',

@@ -1,35 +1,36 @@
 <div>
+    <!-- Statistics Overview -->
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-6 mb-10">
-        <!-- Card 1 -->
-        <div class="bg-surface/80 backdrop-blur-sm rounded-2xl border border-border/50 p-6 shadow-sm hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group">
+        <!-- Card 1: Wilayas -->
+        <div class="glass-panel rounded-2xl p-6 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 relative overflow-hidden group cursor-default">
             <div class="absolute -right-6 -top-6 w-24 h-24 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/10 transition-colors"></div>
             <div class="flex items-center justify-between mb-4 relative z-10">
-                <span class="text-sm font-semibold text-gray-500 uppercase tracking-wider">Wilayas couvertes</span>
-                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 text-primary flex items-center justify-center shadow-inner">
+                <span class="text-sm font-bold text-gray-500 uppercase tracking-wider">{{ $settings->stats_wilayas_label ?? 'Wilayas couvertes' }}</span>
+                <div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center border border-primary/20">
                     <i data-lucide="map-pin" class="w-6 h-6"></i>
                 </div>
             </div>
             <p class="text-4xl font-extrabold text-text relative z-10">{{ $stats['wilayas'] }}</p>
         </div>
         
-        <!-- Card 2 -->
-        <div class="bg-surface/80 backdrop-blur-sm rounded-2xl border border-border/50 p-6 shadow-sm hover:shadow-xl hover:shadow-green-500/5 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group">
-            <div class="absolute -right-6 -top-6 w-24 h-24 bg-green-500/5 rounded-full blur-2xl group-hover:bg-green-500/10 transition-colors"></div>
+        <!-- Card 2: Active Offices -->
+        <div class="glass-panel rounded-2xl p-6 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 relative overflow-hidden group cursor-default">
+            <div class="absolute -right-6 -top-6 w-24 h-24 bg-emerald-500/5 rounded-full blur-2xl group-hover:bg-emerald-500/10 transition-colors"></div>
             <div class="flex items-center justify-between mb-4 relative z-10">
-                <span class="text-sm font-semibold text-gray-500 uppercase tracking-wider">Bureaux dispo.</span>
-                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500/20 to-green-500/5 text-green-600 flex items-center justify-center shadow-inner">
+                <span class="text-sm font-bold text-gray-500 uppercase tracking-wider">{{ $settings->stats_offices_label ?? 'Bureaux actifs' }}</span>
+                <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center border border-emerald-500/20">
                     <i data-lucide="building-2" class="w-6 h-6"></i>
                 </div>
             </div>
             <p class="text-4xl font-extrabold text-text relative z-10">{{ $stats['offices'] }}</p>
         </div>
 
-        <!-- Card 3 -->
-        <div class="bg-surface/80 backdrop-blur-sm rounded-2xl border border-border/50 p-6 shadow-sm hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group">
+        <!-- Card 3: Partners -->
+        <div class="glass-panel rounded-2xl p-6 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 relative overflow-hidden group cursor-default">
             <div class="absolute -right-6 -top-6 w-24 h-24 bg-blue-500/5 rounded-full blur-2xl group-hover:bg-blue-500/10 transition-colors"></div>
             <div class="flex items-center justify-between mb-4 relative z-10">
-                <span class="text-sm font-semibold text-gray-500 uppercase tracking-wider">Partenaires</span>
-                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500/20 to-blue-500/5 text-blue-600 flex items-center justify-center shadow-inner">
+                <span class="text-sm font-bold text-gray-500 uppercase tracking-wider">{{ $settings->stats_partners_label ?? 'Partenaires agréés' }}</span>
+                <div class="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-600 flex items-center justify-center border border-blue-500/20">
                     <i data-lucide="handshake" class="w-6 h-6"></i>
                 </div>
             </div>
@@ -37,17 +38,29 @@
         </div>
     </div>
 
-    <div class="relative mb-8 group">
-        <i data-lucide="search" class="w-6 h-6 absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors"></i>
-        <input type="text" placeholder="Rechercher par wilaya, entreprise, téléphone..." wire:model.live.debounce.300ms="search" class="w-full pl-14 pr-6 py-4 text-base border-2 border-transparent rounded-2xl bg-surface/80 backdrop-blur-md focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary focus:bg-white hover:bg-gray-50/80 transition-all duration-300 shadow-sm" />
+    <!-- Search Input Area -->
+    <div class="relative mb-10 group">
+        <div class="absolute -inset-1 bg-gradient-to-r from-primary to-blue-500 rounded-2xl blur opacity-10 group-hover:opacity-20 transition duration-1000 group-hover:duration-200"></div>
+        <div class="relative glass-panel rounded-2xl flex items-center p-2 shadow-sm border border-border/50">
+            <i data-lucide="search" class="w-6 h-6 text-gray-400 ml-4 group-focus-within:text-primary transition-colors"></i>
+            <input type="text" placeholder="{{ $settings->search_placeholder ?? 'Rechercher par wilaya, commune, entreprise...' }}" 
+                   wire:model.live.debounce.300ms="search" 
+                   class="w-full bg-transparent border-0 focus:ring-0 text-text px-4 py-3 text-lg placeholder:text-gray-400 font-medium outline-none">
+            @if($search)
+                <button wire:click="$set('search', '')" class="p-2 text-gray-400 hover:text-gray-600 transition-colors mr-2">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            @endif
+        </div>
     </div>
 
-    <div class="bg-surface/80 backdrop-blur-md rounded-2xl border border-border/50 shadow-sm overflow-hidden">
+    <!-- Results Table -->
+    <div class="glass-panel rounded-2xl border border-border/50 shadow-premium overflow-hidden">
         <div class="overflow-x-auto">
-            <table class="w-full text-sm">
+            <table class="w-full text-sm text-left">
                 <thead>
-                    <tr class="bg-gray-50/50 border-b border-border/50">
-                        <th class="px-5 py-4 text-left font-bold text-gray-500 uppercase tracking-wider text-xs cursor-pointer hover:text-gray-900 transition-colors group" wire:click="sortBy('wilaya_id')">
+                    <tr class="bg-gray-50/50 border-b border-border/50 text-xs uppercase tracking-wider text-gray-500 font-bold">
+                        <th class="px-6 py-4 cursor-pointer hover:text-gray-900 transition-colors group" wire:click="sortBy('wilaya_id')">
                             <div class="flex items-center gap-2">
                                 Wilaya
                                 @if($sortField === 'wilaya_id')
@@ -57,12 +70,12 @@
                                 @endif
                             </div>
                         </th>
-                        <th class="px-5 py-4 text-left font-bold text-gray-500 uppercase tracking-wider text-xs">Commune</th>
+                        <th class="px-6 py-4">Commune</th>
                         @if($settings->show_code)
-                            <th class="px-5 py-4 text-left font-bold text-gray-500 uppercase tracking-wider text-xs">Code</th>
+                            <th class="px-6 py-4">Code</th>
                         @endif
                         @if($settings->show_company)
-                            <th class="px-5 py-4 text-left font-bold text-gray-500 uppercase tracking-wider text-xs cursor-pointer hover:text-gray-900 transition-colors group" wire:click="sortBy('company_name')">
+                            <th class="px-6 py-4 cursor-pointer hover:text-gray-900 transition-colors group" wire:click="sortBy('company_name')">
                                 <div class="flex items-center gap-2">
                                     Entreprise
                                     @if($sortField === 'company_name')
@@ -74,37 +87,37 @@
                             </th>
                         @endif
                         @if($settings->show_phone)
-                            <th class="px-5 py-4 text-left font-bold text-gray-500 uppercase tracking-wider text-xs hidden sm:table-cell">Téléphone</th>
+                            <th class="px-6 py-4 hidden sm:table-cell">Téléphone</th>
                         @endif
                         @if($settings->show_address)
-                            <th class="px-5 py-4 text-left font-bold text-gray-500 uppercase tracking-wider text-xs hidden md:table-cell">Adresse</th>
+                            <th class="px-6 py-4 hidden md:table-cell">Adresse</th>
                         @endif
                         @if($settings->show_maps)
-                            <th class="px-5 py-4 text-center font-bold text-gray-500 uppercase tracking-wider text-xs">Localisation</th>
+                            <th class="px-6 py-4 text-center">Localisation</th>
                         @endif
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-border/50">
                     @forelse($offices as $office)
-                        <tr wire:key="office-{{ $office->id }}" class="hover:bg-blue-50/30 transition-colors duration-200">
-                            <td class="px-5 py-4">
-                                <span class="inline-flex items-center gap-1.5 font-semibold text-text">
-                                    <i data-lucide="map-pin" class="w-3.5 h-3.5 text-gray-400"></i>
+                        <tr wire:key="office-{{ $office->id }}" class="hover:bg-primary/[0.02] transition-colors duration-200 group">
+                            <td class="px-6 py-4">
+                                <span class="inline-flex items-center gap-2 font-bold text-text">
+                                    <i data-lucide="map-pin" class="w-4 h-4 text-primary opacity-60"></i>
                                     {{ $office->wilaya->name }}
                                 </span>
                             </td>
-                            <td class="px-5 py-4">
-                                <span class="text-gray-600">{{ $office->commune?->name ?? '-' }}</span>
+                            <td class="px-6 py-4">
+                                <span class="font-semibold text-gray-700">{{ $office->commune?->name ?? '-' }}</span>
                             </td>
                             @if($settings->show_code)
-                                <td class="px-5 py-4">
-                                    <span class="font-mono text-xs font-bold text-gray-500 bg-gray-100 px-2 py-1 rounded-md">{{ $office->wilaya->code }}</span>
+                                <td class="px-6 py-4">
+                                    <span class="font-mono text-xs font-bold text-gray-500 bg-gray-100/80 border border-gray-200/50 px-2 py-0.5 rounded-md">{{ $office->wilaya->code }}</span>
                                 </td>
                             @endif
                             @if($settings->show_company)
-                                <td class="px-5 py-4">
+                                <td class="px-6 py-4">
                                     <div class="flex items-center gap-3">
-                                        <div class="w-8 h-8 rounded-lg bg-primary/10 text-primary font-bold flex items-center justify-center text-xs">
+                                        <div class="w-9 h-9 rounded-xl bg-gray-100 flex items-center justify-center text-gray-600 font-bold border border-border group-hover:border-primary/20 group-hover:bg-primary/5 group-hover:text-primary transition-colors">
                                             {{ substr($office->company_name, 0, 1) }}
                                         </div>
                                         <span class="font-bold text-text">{{ $office->company_name }}</span>
@@ -112,25 +125,35 @@
                                 </td>
                             @endif
                             @if($settings->show_phone)
-                                <td class="px-5 py-4 hidden sm:table-cell">
-                                    <a href="tel:{{ $office->phone }}" class="text-gray-600 hover:text-primary font-medium transition-colors">{{ $office->phone }}</a>
-                                    @if($office->phone_secondary)
-                                        <br><a href="tel:{{ $office->phone_secondary }}" class="text-gray-400 hover:text-primary font-medium transition-colors text-xs">{{ $office->phone_secondary }}</a>
-                                    @endif
+                                <td class="px-6 py-4 hidden sm:table-cell">
+                                    <div class="flex flex-col gap-0.5">
+                                        <a href="tel:{{ $office->phone }}" class="text-sm font-semibold text-gray-700 hover:text-primary transition-colors flex items-center gap-1.5">
+                                            <i data-lucide="phone" class="w-3.5 h-3.5 text-gray-400"></i>
+                                            {{ $office->phone }}
+                                        </a>
+                                        @if($office->phone_secondary)
+                                            <a href="tel:{{ $office->phone_secondary }}" class="text-xs text-gray-400 hover:text-primary transition-colors flex items-center gap-1.5">
+                                                <i data-lucide="phone" class="w-3 h-3 text-gray-400"></i>
+                                                {{ $office->phone_secondary }}
+                                            </a>
+                                        @endif
+                                    </div>
                                 </td>
                             @endif
                             @if($settings->show_address)
-                                <td class="px-5 py-4 text-gray-500 hidden md:table-cell max-w-xs truncate">{{ $office->address }}</td>
+                                <td class="px-6 py-4 text-gray-500 hidden md:table-cell max-w-xs truncate" title="{{ $office->address }}">
+                                    {{ $office->address }}
+                                </td>
                             @endif
                             @if($settings->show_maps)
-                                <td class="px-5 py-4 text-center">
+                                <td class="px-6 py-4 text-center">
                                     @if($office->google_maps)
-                                        <a href="{{ $office->google_maps }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-all shadow-sm">
-                                            <i data-lucide="map" class="w-3.5 h-3.5"></i>
-                                            Voir sur Maps
+                                        <a href="{{ $office->google_maps }}" target="_blank" rel="noopener noreferrer" class="btn-secondary !py-1.5 !px-3 text-xs flex items-center justify-center gap-1.5 hover:!bg-primary hover:!text-white hover:!border-primary">
+                                            <i data-lucide="navigation" class="w-3.5 h-3.5"></i>
+                                            Itinéraire
                                         </a>
                                     @else
-                                        <span class="text-gray-300">—</span>
+                                        <span class="text-gray-300 font-medium">—</span>
                                     @endif
                                 </td>
                             @endif
@@ -138,11 +161,11 @@
                     @empty
                         <tr>
                             <td colspan="10" class="px-6 py-16 text-center text-gray-500">
-                                <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-gray-100">
-                                    <i data-lucide="search-x" class="w-10 h-10 text-gray-300"></i>
+                                <div class="w-20 h-20 bg-gray-50 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-border">
+                                    <i data-lucide="inbox" class="w-10 h-10 text-gray-300"></i>
                                 </div>
                                 <p class="text-lg font-bold text-gray-700">Aucun bureau trouvé</p>
-                                <p class="text-gray-500 mt-1 max-w-sm mx-auto">Essayez de modifier votre recherche avec d'autres mots-clés.</p>
+                                <p class="text-gray-500 mt-1 max-w-sm mx-auto leading-relaxed">Aucun résultat ne correspond à votre recherche. Veuillez réessayer avec d'autres termes.</p>
                             </td>
                         </tr>
                     @endforelse

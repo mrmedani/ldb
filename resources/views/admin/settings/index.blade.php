@@ -79,6 +79,98 @@
 
             <hr class="border-border/50">
 
+            <!-- Contenu du site -->
+            <section>
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-600">
+                        <i data-lucide="type" class="w-5 h-5"></i>
+                    </div>
+                    <h2 class="text-lg font-bold text-text">Contenu du site</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-semibold text-gray-700 mb-1.5">Nom du site</label>
+                        <input type="text" name="site_name" value="{{ old('site_name', $settings->site_name) }}" class="w-full px-4 py-2.5 text-sm border-2 border-transparent rounded-xl bg-gray-50/50 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary focus:bg-white hover:bg-gray-100/80 transition-all duration-300">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-semibold text-gray-700 mb-1.5">Meta description (SEO)</label>
+                        <textarea name="meta_description" rows="2" class="w-full px-4 py-2.5 text-sm border-2 border-transparent rounded-xl bg-gray-50/50 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary focus:bg-white hover:bg-gray-100/80 transition-all duration-300">{{ old('meta_description', $settings->meta_description) }}</textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1.5">Badge héro</label>
+                        <input type="text" name="hero_badge" value="{{ old('hero_badge', $settings->hero_badge) }}" class="w-full px-4 py-2.5 text-sm border-2 border-transparent rounded-xl bg-gray-50/50 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary focus:bg-white hover:bg-gray-100/80 transition-all duration-300">
+                        <p class="text-xs text-gray-400 mt-1.5">Texte du badge au-dessus du titre principal</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1.5">Texte de recherche (placeholder)</label>
+                        <input type="text" name="search_placeholder" value="{{ old('search_placeholder', $settings->search_placeholder) }}" class="w-full px-4 py-2.5 text-sm border-2 border-transparent rounded-xl bg-gray-50/50 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary focus:bg-white hover:bg-gray-100/80 transition-all duration-300">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-semibold text-gray-700 mb-1.5">Titre principal (utilisez un saut de ligne pour la partie en dégradé)</label>
+                        <textarea name="hero_title" rows="2" class="w-full px-4 py-2.5 text-sm border-2 border-transparent rounded-xl bg-gray-50/50 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary focus:bg-white hover:bg-gray-100/80 transition-all duration-300 font-mono">{{ old('hero_title', $settings->hero_title) }}</textarea>
+                        <p class="text-xs text-gray-400 mt-1.5">La première ligne sera en texte normal, la seconde en dégradé bleu</p>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-semibold text-gray-700 mb-1.5">Sous-titre</label>
+                        <textarea name="hero_subtitle" rows="3" class="w-full px-4 py-2.5 text-sm border-2 border-transparent rounded-xl bg-gray-50/50 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary focus:bg-white hover:bg-gray-100/80 transition-all duration-300">{{ old('hero_subtitle', $settings->hero_subtitle) }}</textarea>
+                    </div>
+                </div>
+            </section>
+
+            <hr class="border-border/50">
+
+            <!-- Pied de page -->
+            <section>
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-600">
+                        <i data-lucide="chevron-down" class="w-5 h-5"></i>
+                    </div>
+                    <h2 class="text-lg font-bold text-text">Pied de page</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1.5">Texte de copyright</label>
+                        <input type="text" name="footer_copyright" value="{{ old('footer_copyright', $settings->footer_copyright) }}" class="w-full px-4 py-2.5 text-sm border-2 border-transparent rounded-xl bg-gray-50/50 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary focus:bg-white hover:bg-gray-100/80 transition-all duration-300">
+                        <p class="text-xs text-gray-400 mt-1.5">Utilisez <code class="bg-gray-200 px-1 rounded">{year}</code> pour l'année courante</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1.5">Tagline</label>
+                        <input type="text" name="footer_tagline" value="{{ old('footer_tagline', $settings->footer_tagline) }}" class="w-full px-4 py-2.5 text-sm border-2 border-transparent rounded-xl bg-gray-50/50 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary focus:bg-white hover:bg-gray-100/80 transition-all duration-300">
+                    </div>
+                </div>
+            </section>
+
+            <hr class="border-border/50">
+
+            <!-- Statistiques -->
+            <section>
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 rounded-xl bg-cyan-500/10 flex items-center justify-center text-cyan-600">
+                        <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
+                    </div>
+                    <h2 class="text-lg font-bold text-text">Étiquettes des statistiques</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1.5">Carte 1</label>
+                        <input type="text" name="stats_wilayas_label" value="{{ old('stats_wilayas_label', $settings->stats_wilayas_label) }}" class="w-full px-4 py-2.5 text-sm border-2 border-transparent rounded-xl bg-gray-50/50 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary focus:bg-white hover:bg-gray-100/80 transition-all duration-300">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1.5">Carte 2</label>
+                        <input type="text" name="stats_offices_label" value="{{ old('stats_offices_label', $settings->stats_offices_label) }}" class="w-full px-4 py-2.5 text-sm border-2 border-transparent rounded-xl bg-gray-50/50 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary focus:bg-white hover:bg-gray-100/80 transition-all duration-300">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1.5">Carte 3</label>
+                        <input type="text" name="stats_partners_label" value="{{ old('stats_partners_label', $settings->stats_partners_label) }}" class="w-full px-4 py-2.5 text-sm border-2 border-transparent rounded-xl bg-gray-50/50 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary focus:bg-white hover:bg-gray-100/80 transition-all duration-300">
+                    </div>
+                </div>
+            </section>
+
+            <hr class="border-border/50">
+
             <!-- Colonnes -->
             <section>
                 <div class="flex items-center gap-3 mb-2">

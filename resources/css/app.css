@@ -4,14 +4,30 @@
 
 @theme {
     --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
-    --color-primary: #0066FF;
-    --color-primary-dark: #0052CC;
+    
+    --color-primary-50: #EEF2FF;
+    --color-primary-100: #E0E7FF;
+    --color-primary-200: #C7D2FE;
+    --color-primary-300: #A5B4FC;
+    --color-primary-400: #818CF8;
+    --color-primary-500: #6366F1;
+    --color-primary-600: #4F46E5;
+    --color-primary-700: #4338CA;
+    --color-primary-800: #3730A3;
+    --color-primary-900: #312E81;
+
+    --color-primary: var(--color-primary-500);
+    --color-primary-dark: var(--color-primary-600);
     --color-surface: #FFFFFF;
-    --color-background: #F8FAFC;
-    --color-text: #0F172A;
-    --color-border: #E5E7EB;
+    --color-background: #FAFAFA; /* Soft light gray for SaaS feel */
+    --color-text: #18181B; /* Zinc 900 */
+    --color-text-muted: #71717A; /* Zinc 500 */
+    --color-border: #E4E4E7; /* Zinc 200 */
     --color-success: #10B981;
-    --color-danger: #EF4444;
+    --color-warning: #F59E0B;
+    --color-danger: #F43F5E;
+    
+    --shadow-premium: 0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 0 3px rgba(0,0,0,0.02);
 }
 
 @layer base {
@@ -20,5 +36,26 @@
         color: var(--color-text);
         background-color: var(--color-background);
         scroll-behavior: smooth;
+    }
+    body {
+        @apply antialiased selection:bg-primary/20;
+    }
+}
+
+@layer components {
+    .btn-primary {
+        @apply inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-primary to-primary-dark text-white rounded-lg text-sm font-semibold shadow-sm shadow-primary/30 hover:shadow-md hover:shadow-primary/40 hover:-translate-y-0.5 transition-all duration-200 active:scale-95 active:translate-y-0;
+    }
+    .btn-secondary {
+        @apply inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-white border border-border text-text rounded-lg text-sm font-semibold shadow-sm hover:bg-gray-50 hover:text-primary transition-all duration-200 active:scale-95;
+    }
+    .glass-panel {
+        @apply bg-surface/80 backdrop-blur-xl border border-white/40 shadow-premium;
+    }
+    .input-modern {
+        @apply w-full rounded-xl border border-gray-200 bg-gray-50/50 px-4 py-2.5 text-sm transition-all duration-300 focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none hover:bg-gray-50/80;
+    }
+    .label-modern {
+        @apply block text-sm font-semibold text-gray-700 mb-1.5 transition-colors;
     }
 }

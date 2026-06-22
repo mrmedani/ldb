@@ -13,7 +13,7 @@ class OfficeManager extends Component
     use WithPagination;
 
     public string $search = '';
-    public string $sortField = 'display_order';
+    public string $sortField = 'wilaya_id';
     public string $sortDirection = 'asc';
     public ?string $filterWilaya = null;
     public ?string $filterVisibility = null;
@@ -22,7 +22,7 @@ class OfficeManager extends Component
 
     protected $queryString = [
         'search' => ['except' => ''],
-        'sortField' => ['except' => 'display_order'],
+        'sortField' => ['except' => 'wilaya_id'],
         'sortDirection' => ['except' => 'asc'],
         'filterWilaya' => ['except' => ''],
         'filterVisibility' => ['except' => ''],

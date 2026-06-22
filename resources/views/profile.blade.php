@@ -1,29 +1,26 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Profile') }}
-        </h2>
-    </x-slot>
+@extends('admin.layouts.admin')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    <livewire:profile.update-profile-information-form />
-                </div>
-            </div>
+@section('title', 'Profil')
 
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    <livewire:profile.update-password-form />
-                </div>
-            </div>
+@section('content')
+<div class="max-w-4xl mx-auto">
+    <div class="mb-8">
+        <h1 class="text-3xl font-extrabold text-text tracking-tight">Mon Profil</h1>
+        <p class="text-gray-500 font-medium mt-2">Gérez vos informations personnelles et la sécurité de votre compte administrateur.</p>
+    </div>
 
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    <livewire:profile.delete-user-form />
-                </div>
-            </div>
+    <div class="space-y-8">
+        <div class="glass-panel rounded-2xl p-6 lg:p-8 border border-border/50 shadow-sm">
+            <livewire:profile.update-profile-information-form />
+        </div>
+
+        <div class="glass-panel rounded-2xl p-6 lg:p-8 border border-border/50 shadow-sm">
+            <livewire:profile.update-password-form />
+        </div>
+
+        <div class="glass-panel rounded-2xl p-6 lg:p-8 border border-border/50 shadow-sm">
+            <livewire:profile.delete-user-form />
         </div>
     </div>
-</x-app-layout>
+</div>
+@endsection
