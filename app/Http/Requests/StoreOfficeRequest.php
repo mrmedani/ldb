@@ -18,6 +18,7 @@ class StoreOfficeRequest extends FormRequest
             'commune_id' => ['nullable', 'exists:communes,id'],
             'company_name' => ['required', 'string', 'max:200'],
             'phone' => ['required', 'string', 'max:50'],
+            'phone_secondary' => ['nullable', 'string', 'max:50'],
             'address' => ['required', 'string'],
             'google_maps' => ['nullable', 'string', 'url', 'max:2048'],
             'display_order' => ['nullable', 'integer', 'min:0'],

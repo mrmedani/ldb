@@ -23,6 +23,7 @@
                 <th>Code</th>
                 <th>Entreprise</th>
                 <th>Téléphone</th>
+                <th>Tél. 2</th>
                 <th>Adresse</th>
                 <th>Visible</th>
             </tr>
@@ -36,6 +37,7 @@
                     <td>{{ $office->wilaya->code }}</td>
                     <td>{{ $office->company_name }}</td>
                     <td>{{ $office->phone }}</td>
+                    <td>{{ $office->phone_secondary ?? '-' }}</td>
                     <td>{{ $office->address }}</td>
                     <td>{{ $office->is_visible ? 'Oui' : 'Non' }}</td>
                 </tr>

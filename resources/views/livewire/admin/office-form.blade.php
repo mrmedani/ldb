@@ -43,12 +43,21 @@
             </div>
 
             <div class="space-y-1.5 group">
-                <label class="text-sm font-semibold text-gray-700 group-focus-within:text-primary transition-colors">Téléphone</label>
+                <label class="text-sm font-semibold text-gray-700 group-focus-within:text-primary transition-colors">Téléphone principal</label>
                 <div class="relative">
                     <i data-lucide="phone" class="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors"></i>
                     <input type="text" wire:model="phone" placeholder="Numéro de téléphone" class="w-full pl-11 pr-4 py-3 text-sm border-2 border-transparent rounded-xl bg-gray-50/50 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary focus:bg-white hover:bg-gray-100/80 transition-all duration-300 @error('phone') !border-red-500 !ring-red-500/20 @enderror" />
                 </div>
                 @error('phone') <p class="text-xs text-red-500 mt-1.5 font-medium flex items-center gap-1"><i data-lucide="alert-circle" class="w-3.5 h-3.5"></i>{{ $message }}</p> @enderror
+            </div>
+
+            <div class="space-y-1.5 group">
+                <label class="text-sm font-semibold text-gray-700 group-focus-within:text-primary transition-colors">Téléphone secondaire</label>
+                <div class="relative">
+                    <i data-lucide="phone" class="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors"></i>
+                    <input type="text" wire:model="phone_secondary" placeholder="Numéro secondaire (optionnel)" class="w-full pl-11 pr-4 py-3 text-sm border-2 border-transparent rounded-xl bg-gray-50/50 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary focus:bg-white hover:bg-gray-100/80 transition-all duration-300 @error('phone_secondary') !border-red-500 !ring-red-500/20 @enderror" />
+                </div>
+                @error('phone_secondary') <p class="text-xs text-red-500 mt-1.5 font-medium flex items-center gap-1"><i data-lucide="alert-circle" class="w-3.5 h-3.5"></i>{{ $message }}</p> @enderror
             </div>
 
             <div class="space-y-1.5 group">

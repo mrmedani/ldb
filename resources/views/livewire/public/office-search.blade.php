@@ -114,6 +114,9 @@
                             @if($settings->show_phone)
                                 <td class="px-5 py-4 hidden sm:table-cell">
                                     <a href="tel:{{ $office->phone }}" class="text-gray-600 hover:text-primary font-medium transition-colors">{{ $office->phone }}</a>
+                                    @if($office->phone_secondary)
+                                        <br><a href="tel:{{ $office->phone_secondary }}" class="text-gray-400 hover:text-primary font-medium transition-colors text-xs">{{ $office->phone_secondary }}</a>
+                                    @endif
                                 </td>
                             @endif
                             @if($settings->show_address)

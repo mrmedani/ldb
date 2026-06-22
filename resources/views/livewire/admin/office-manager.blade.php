@@ -137,6 +137,9 @@
                             </td>
                             <td class="px-5 py-4 hidden lg:table-cell">
                                 <a href="tel:{{ $office->phone }}" class="text-gray-600 hover:text-primary font-medium transition-colors">{{ $office->phone }}</a>
+                                @if($office->phone_secondary)
+                                    <br><a href="tel:{{ $office->phone_secondary }}" class="text-gray-400 hover:text-primary font-medium transition-colors text-xs">{{ $office->phone_secondary }}</a>
+                                @endif
                             </td>
                             <td class="px-5 py-4 text-gray-500 hidden xl:table-cell max-w-xs truncate">{{ $office->address }}</td>
                             <td class="px-5 py-4 hidden lg:table-cell text-center">

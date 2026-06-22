@@ -16,6 +16,7 @@ class OfficeForm extends Component
     public string $commune_id = '';
     public string $company_name = '';
     public string $phone = '';
+    public string $phone_secondary = '';
     public string $address = '';
     public string $google_maps = '';
     public int $display_order = 0;
@@ -34,6 +35,7 @@ class OfficeForm extends Component
             $this->commune_id = (string) ($office->commune_id ?? '');
             $this->company_name = $office->company_name;
             $this->phone = $office->phone;
+            $this->phone_secondary = $office->phone_secondary ?? '';
             $this->address = $office->address;
             $this->google_maps = $office->google_maps ?? '';
             $this->display_order = $office->display_order;
@@ -60,6 +62,7 @@ class OfficeForm extends Component
             'commune_id' => ['nullable', 'exists:communes,id'],
             'company_name' => ['required', 'string', 'max:200'],
             'phone' => ['required', 'string', 'max:50'],
+            'phone_secondary' => ['nullable', 'string', 'max:50'],
             'address' => ['required', 'string'],
             'google_maps' => ['nullable', 'string', 'max:2048'],
             'display_order' => ['nullable', 'integer', 'min:0'],
@@ -74,7 +77,7 @@ class OfficeForm extends Component
         } else {
             Office::create($data);
             $this->dispatch('notify', message: 'Bureau créé avec succès.', type: 'success');
-            $this->reset(['wilaya_id', 'wilaya_code', 'commune_id', 'company_name', 'phone', 'address', 'google_maps', 'display_order']);
+            $this->reset(['wilaya_id', 'wilaya_code', 'commune_id', 'company_name', 'phone', 'phone_secondary', 'address', 'google_maps', 'display_order']);
         }
     }
 

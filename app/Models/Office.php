@@ -13,6 +13,7 @@ class Office extends Model
         'commune_id',
         'company_name',
         'phone',
+        'phone_secondary',
         'address',
         'google_maps',
         'display_order',
