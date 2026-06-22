@@ -70,6 +70,7 @@ class OfficeForm extends Component
         ]);
 
         $data['google_maps'] = $this->google_maps ?: null;
+        $data['commune_id'] = $this->commune_id ?: null;
 
         if ($this->editing) {
             Office::findOrFail($this->officeId)->update($data);

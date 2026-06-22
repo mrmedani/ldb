@@ -231,6 +231,7 @@
                         </div>
                     @endif
 
+                    @if($settings->show_maps && $office->google_maps)
                         <div class="pt-2">
                             <a href="{{ $office->google_maps }}" target="_blank" rel="noopener noreferrer" class="btn-secondary !py-2.5 w-full text-xs flex items-center justify-center gap-2 hover:!bg-primary hover:!text-white hover:!border-primary">
                                 <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -239,6 +240,7 @@
                                 Itinéraire Maps
                             </a>
                         </div>
+                    @endif
                 </div>
             @empty
                 <div class="px-6 py-16 text-center text-gray-500">
