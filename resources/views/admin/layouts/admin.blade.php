@@ -124,6 +124,14 @@
                     <span>Gestion des bureaux</span>
                 </a>
                 
+                <a href="{{ route('admin.wilayas.delivery') }}" wire:navigate class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 group relative {{ request()->routeIs('admin.wilayas.delivery') ? 'text-primary bg-primary/10' : 'text-gray-600 hover:bg-gray-100/80 hover:text-gray-900' }}">
+                    @if(request()->routeIs('admin.wilayas.delivery'))
+                        <div class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-primary rounded-r-full"></div>
+                    @endif
+                    <i data-lucide="truck" class="w-5 h-5 {{ request()->routeIs('admin.wilayas.delivery') ? 'text-primary' : 'text-gray-400 group-hover:text-gray-600 transition-colors' }}"></i>
+                    <span>Délais de livraison</span>
+                </a>
+
                 <a href="{{ route('admin.settings') }}" wire:navigate class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 group relative {{ request()->routeIs('admin.settings') ? 'text-primary bg-primary/10' : 'text-gray-600 hover:bg-gray-100/80 hover:text-gray-900' }}">
                     @if(request()->routeIs('admin.settings'))
                         <div class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-primary rounded-r-full"></div>

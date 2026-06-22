@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 class Setting extends Model
@@ -25,6 +24,8 @@ class Setting extends Model
         'show_phone',
         'show_address',
         'show_maps',
+        'show_delivery_time',
+        'column_order',
         'favicon',
         'logo',
     ];
@@ -37,6 +38,8 @@ class Setting extends Model
             'show_phone' => 'boolean',
             'show_address' => 'boolean',
             'show_maps' => 'boolean',
+            'show_delivery_time' => 'boolean',
+            'column_order' => 'array',
             'favicon' => 'string',
             'logo' => 'string',
         ];
@@ -44,9 +47,7 @@ class Setting extends Model
 
     public static function getSettings(): self
     {
-        return Cache::rememberForever('settings', function () {
-            return self::first() ?? self::create([]);
-        });
+        return self::first() ?? self::create([]);
     }
 
     public function getFaviconUrlAttribute(): ?string
@@ -68,8 +69,34 @@ class Setting extends Model
         return e($lines[0]) . ' <br class="hidden sm:block"> <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-600">' . e($lines[1]) . '</span>';
     }
 
+    public function getOrderedColumnsAttribute(): array
+    {
+        $allColumns = [
+            'wilaya' => ['label' => 'Wilaya', 'sort_field' => 'wilaya_id'],
+            'commune' => ['label' => 'Commune'],
+            'delivery_time' => ['label' => 'Délai livraison', 'toggle' => 'show_delivery_time'],
+            'code' => ['label' => 'Code', 'toggle' => 'show_code'],
+            'company' => ['label' => 'Entreprise', 'sort_field' => 'company_name', 'toggle' => 'show_company'],
+            'phone' => ['label' => 'Téléphone', 'toggle' => 'show_phone', 'th_class' => 'hidden sm:table-cell', 'td_class' => 'hidden sm:table-cell'],
+            'address' => ['label' => 'Adresse', 'toggle' => 'show_address', 'th_class' => 'hidden md:table-cell', 'td_class' => 'hidden md:table-cell max-w-xs truncate'],
+            'maps' => ['label' => 'Localisation', 'toggle' => 'show_maps', 'th_class' => 'text-center'],
+        ];
+
+        $order = $this->column_order ?? ['wilaya', 'commune', 'delivery_time', 'code', 'company', 'phone', 'address', 'maps'];
+
+        $result = [];
+        foreach ($order as $key) {
+            if (!isset($allColumns[$key])) continue;
+            $col = $allColumns[$key];
+            if (isset($col['toggle']) && !$this->{$col['toggle']}) continue;
+            $col['key'] = $key;
+            $result[] = $col;
+        }
+
+        return $result;
+    }
+
     protected static function booted(): void
     {
-        static::saved(fn () => Cache::forget('settings'));
     }
 }

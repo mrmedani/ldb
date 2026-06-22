@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Setting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 class SettingController extends Controller
@@ -16,6 +17,14 @@ class SettingController extends Controller
 
     public function update(Request $request)
     {
+        Cache::forget('settings');
+
+        if ($request->has('column_order') && is_string($request->input('column_order'))) {
+            $request->merge([
+                'column_order' => json_decode($request->input('column_order'), true),
+            ]);
+        }
+
         $data = $request->validate([
             'site_name' => 'nullable|string|max:100',
             'meta_description' => 'nullable|string|max:500',
@@ -33,6 +42,9 @@ class SettingController extends Controller
             'show_phone' => 'boolean',
             'show_address' => 'boolean',
             'show_maps' => 'boolean',
+            'show_delivery_time' => 'boolean',
+            'column_order' => 'nullable|array',
+            'column_order.*' => 'string|in:wilaya,commune,delivery_time,code,company,phone,address,maps',
             'favicon' => 'nullable|file|mimes:ico,png,svg,jpg,jpeg|max:512',
             'logo' => 'nullable|image|mimes:png,svg,jpg,jpeg,webp|max:2048',
         ]);
@@ -54,6 +66,8 @@ class SettingController extends Controller
         }
 
         $settings->update($data);
+
+        Cache::forget('settings');
 
         return redirect()->route('admin.settings')
             ->with('success', 'Paramètres mis à jour avec succès.');

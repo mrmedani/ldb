@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ExportController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\WilayaDeliveryController;
 use App\Http\Controllers\Public\HomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -31,6 +32,9 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
 
     Route::get('/settings', [SettingController::class, 'index'])->name('settings');
     Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
+
+    Route::get('/wilayas/delivery', [WilayaDeliveryController::class, 'edit'])->name('wilayas.delivery');
+    Route::post('/wilayas/delivery', [WilayaDeliveryController::class, 'update'])->name('wilayas.delivery.update');
 
     Route::get('/exports/excel', [ExportController::class, 'excel'])->name('exports.excel');
     Route::get('/exports/pdf', [ExportController::class, 'pdf'])->name('exports.pdf');

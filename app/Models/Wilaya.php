@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Wilaya extends Model
 {
-    protected $fillable = ['code', 'name'];
+    protected $fillable = ['code', 'name', 'delivery_time'];
 
     public function offices(): HasMany
     {

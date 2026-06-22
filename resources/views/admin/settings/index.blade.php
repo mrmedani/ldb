@@ -179,88 +179,66 @@
                     </div>
                     <h2 class="text-lg font-bold text-text">Colonnes du tableau public</h2>
                 </div>
-                <p class="text-sm text-gray-500 mb-6 ml-13">Désactivez une colonne pour la masquer visuellement du tableau accessible à vos clients.</p>
+                <p class="text-sm text-gray-500 mb-6 ml-13">Glissez-déposez pour réordonner les colonnes. Désactivez une colonne pour la masquer.</p>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <label class="flex items-center justify-between p-5 rounded-2xl border-2 border-transparent bg-gray-50/50 hover:bg-white hover:border-primary/10 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 cursor-pointer group">
-                        <div class="flex items-start gap-4">
-                            <div class="mt-0.5 w-8 h-8 rounded-lg bg-white border border-gray-100 shadow-sm flex items-center justify-center text-gray-400 group-hover:text-primary transition-colors">
-                                <i data-lucide="hash" class="w-4 h-4"></i>
-                            </div>
-                            <div>
-                                <p class="text-sm font-bold text-gray-700">Code Wilaya</p>
-                                <p class="text-xs text-gray-500 mt-0.5">Afficher le code numérique</p>
-                            </div>
-                        </div>
-                        <div class="relative flex items-center">
-                            <input type="hidden" name="show_code" value="0">
-                            <input type="checkbox" name="show_code" value="1" {{ $settings->show_code ? 'checked' : '' }} class="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary/20 transition-all duration-300">
-                        </div>
-                    </label>
+                @php
+                    $columnDefs = [
+                        'wilaya' => ['icon' => 'map-pin', 'label' => 'Wilaya', 'desc' => 'Toujours affiché', 'locked' => true],
+                        'commune' => ['icon' => 'building', 'label' => 'Commune', 'desc' => 'Toujours affiché', 'locked' => true],
+                        'delivery_time' => ['icon' => 'clock', 'label' => 'Délai livraison', 'desc' => 'Afficher le délai de livraison', 'toggle' => 'show_delivery_time'],
+                        'code' => ['icon' => 'hash', 'label' => 'Code Wilaya', 'desc' => 'Afficher le code numérique', 'toggle' => 'show_code'],
+                        'company' => ['icon' => 'building-2', 'label' => 'Entreprise partenaire', 'desc' => 'Afficher le nom du bureau', 'toggle' => 'show_company'],
+                        'phone' => ['icon' => 'phone', 'label' => 'Téléphone', 'desc' => 'Afficher le numéro de contact', 'toggle' => 'show_phone'],
+                        'address' => ['icon' => 'map-pin', 'label' => 'Adresse', 'desc' => "Afficher l'adresse complète", 'toggle' => 'show_address'],
+                        'maps' => ['icon' => 'map', 'label' => 'Lien Google Maps', 'desc' => 'Afficher le bouton vers Maps', 'toggle' => 'show_maps'],
+                    ];
+                    $currentOrder = $settings->column_order ?? ['wilaya', 'commune', 'delivery_time', 'code', 'company', 'phone', 'address', 'maps'];
+                @endphp
 
-                    <label class="flex items-center justify-between p-5 rounded-2xl border-2 border-transparent bg-gray-50/50 hover:bg-white hover:border-primary/10 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 cursor-pointer group">
-                        <div class="flex items-start gap-4">
-                            <div class="mt-0.5 w-8 h-8 rounded-lg bg-white border border-gray-100 shadow-sm flex items-center justify-center text-gray-400 group-hover:text-primary transition-colors">
-                                <i data-lucide="building" class="w-4 h-4"></i>
+                <div id="columnSortable" class="space-y-2">
+                    @foreach($currentOrder as $colKey)
+                        @if(!isset($columnDefs[$colKey])) @continue @endif
+                        @php $col = $columnDefs[$colKey]; $isLocked = $col['locked'] ?? false; @endphp
+                        <div class="column-item flex items-center gap-4 p-4 rounded-xl border border-border/50 bg-gray-50/30 hover:border-primary/20 hover:shadow-sm transition-all duration-200" draggable="true" data-key="{{ $colKey }}">
+                            <div class="drag-handle cursor-grab active:cursor-grabbing text-gray-300 hover:text-gray-500 transition-colors touch-none select-none">
+                                <i data-lucide="grip-vertical" class="w-5 h-5"></i>
                             </div>
-                            <div>
-                                <p class="text-sm font-bold text-gray-700">Entreprise partenaire</p>
-                                <p class="text-xs text-gray-500 mt-0.5">Afficher le nom du bureau</p>
-                            </div>
-                        </div>
-                        <div class="relative flex items-center">
-                            <input type="hidden" name="show_company" value="0">
-                            <input type="checkbox" name="show_company" value="1" {{ $settings->show_company ? 'checked' : '' }} class="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary/20 transition-all duration-300">
-                        </div>
-                    </label>
 
-                    <label class="flex items-center justify-between p-5 rounded-2xl border-2 border-transparent bg-gray-50/50 hover:bg-white hover:border-primary/10 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 cursor-pointer group">
-                        <div class="flex items-start gap-4">
-                            <div class="mt-0.5 w-8 h-8 rounded-lg bg-white border border-gray-100 shadow-sm flex items-center justify-center text-gray-400 group-hover:text-primary transition-colors">
-                                <i data-lucide="phone" class="w-4 h-4"></i>
+                            <div class="w-9 h-9 rounded-lg bg-white border border-gray-100 shadow-sm flex items-center justify-center text-gray-400 shrink-0">
+                                <i data-lucide="{{ $col['icon'] }}" class="w-4 h-4"></i>
                             </div>
-                            <div>
-                                <p class="text-sm font-bold text-gray-700">Téléphone</p>
-                                <p class="text-xs text-gray-500 mt-0.5">Afficher le numéro de contact</p>
-                            </div>
-                        </div>
-                        <div class="relative flex items-center">
-                            <input type="hidden" name="show_phone" value="0">
-                            <input type="checkbox" name="show_phone" value="1" {{ $settings->show_phone ? 'checked' : '' }} class="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary/20 transition-all duration-300">
-                        </div>
-                    </label>
 
-                    <label class="flex items-center justify-between p-5 rounded-2xl border-2 border-transparent bg-gray-50/50 hover:bg-white hover:border-primary/10 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 cursor-pointer group">
-                        <div class="flex items-start gap-4">
-                            <div class="mt-0.5 w-8 h-8 rounded-lg bg-white border border-gray-100 shadow-sm flex items-center justify-center text-gray-400 group-hover:text-primary transition-colors">
-                                <i data-lucide="map-pin" class="w-4 h-4"></i>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-sm font-bold text-gray-700">{{ $col['label'] }}</p>
+                                <p class="text-xs text-gray-500 mt-0.5">{{ $col['desc'] }}</p>
                             </div>
-                            <div>
-                                <p class="text-sm font-bold text-gray-700">Adresse</p>
-                                <p class="text-xs text-gray-500 mt-0.5">Afficher l'adresse complète</p>
-                            </div>
-                        </div>
-                        <div class="relative flex items-center">
-                            <input type="hidden" name="show_address" value="0">
-                            <input type="checkbox" name="show_address" value="1" {{ $settings->show_address ? 'checked' : '' }} class="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary/20 transition-all duration-300">
-                        </div>
-                    </label>
 
-                    <label class="flex items-center justify-between p-5 rounded-2xl border-2 border-transparent bg-gray-50/50 hover:bg-white hover:border-primary/10 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 cursor-pointer group md:col-span-2 lg:col-span-1">
-                        <div class="flex items-start gap-4">
-                            <div class="mt-0.5 w-8 h-8 rounded-lg bg-white border border-gray-100 shadow-sm flex items-center justify-center text-gray-400 group-hover:text-primary transition-colors">
-                                <i data-lucide="map" class="w-4 h-4"></i>
-                            </div>
-                            <div>
-                                <p class="text-sm font-bold text-gray-700">Lien Google Maps</p>
-                                <p class="text-xs text-gray-500 mt-0.5">Afficher le bouton vers Maps</p>
+                            <div class="flex items-center gap-2 shrink-0">
+                                <div class="flex flex-col items-center gap-0.5 mr-1">
+                                    <button type="button" class="move-up p-1 text-gray-300 hover:text-gray-600 hover:bg-gray-100 rounded transition-colors disabled:opacity-20 disabled:cursor-not-allowed" {{ $loop->first ? 'disabled' : '' }}>
+                                        <i data-lucide="chevron-up" class="w-3.5 h-3.5"></i>
+                                    </button>
+                                    <span class="order-badge text-[11px] font-bold text-gray-400 bg-gray-100 border border-gray-200/50 px-1.5 py-0.5 rounded-md">{{ $loop->iteration }}</span>
+                                    <button type="button" class="move-down p-1 text-gray-300 hover:text-gray-600 hover:bg-gray-100 rounded transition-colors disabled:opacity-20 disabled:cursor-not-allowed" {{ $loop->last ? 'disabled' : '' }}>
+                                        <i data-lucide="chevron-down" class="w-3.5 h-3.5"></i>
+                                    </button>
+                                </div>
+                                @if($isLocked)
+                                    <span class="text-xs text-gray-400 font-medium px-3 py-1.5 bg-gray-100/50 rounded-lg border border-gray-200/50">Obligatoire</span>
+                                @else
+                                    <input type="hidden" name="{{ $col['toggle'] }}" value="0">
+                                    <input type="checkbox" name="{{ $col['toggle'] }}" value="1" {{ $settings->{$col['toggle']} ? 'checked' : '' }} class="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary/20 transition-all duration-300">
+                                @endif
                             </div>
                         </div>
-                        <div class="relative flex items-center">
-                            <input type="hidden" name="show_maps" value="0">
-                            <input type="checkbox" name="show_maps" value="1" {{ $settings->show_maps ? 'checked' : '' }} class="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary/20 transition-all duration-300">
-                        </div>
-                    </label>
+                    @endforeach
+                </div>
+
+                <input type="hidden" name="column_order" id="columnOrderInput" value="{{ json_encode($currentOrder) }}">
+
+                <div class="mt-4 flex items-center gap-2 text-xs text-gray-400 bg-gray-50/50 rounded-xl px-4 py-3 border border-border/50">
+                    <i data-lucide="info" class="w-4 h-4 text-gray-300 shrink-0"></i>
+                    <span>Les colonnes Wilaya et Commune sont toujours affichées. Faites glisser les colonnes pour réorganiser l'ordre d'affichage.</span>
                 </div>
             </section>
         </div>
@@ -280,6 +258,119 @@
             from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        .column-item.dragging {
+            opacity: 0.5;
+            border-style: dashed;
+            border-color: rgb(59 130 246 / 0.3);
+            background: rgb(239 246 255);
+        }
+        .column-item.drag-over {
+            border-color: rgb(59 130 246 / 0.5);
+            background: rgb(239 246 255 / 0.8);
+            box-shadow: 0 0 0 2px rgb(59 130 246 / 0.1);
+        }
     </style>
+
+    <script>
+        function initColumnDrag() {
+            const container = document.getElementById('columnSortable');
+            if (!container || container.dataset.initialized) return;
+            container.dataset.initialized = '1';
+
+            function updateOrder() {
+                const items = container.querySelectorAll('.column-item');
+                const order = [];
+                items.forEach((item, index) => {
+                    order.push(item.dataset.key);
+                    const badge = item.querySelector('.order-badge');
+                    const up = item.querySelector('.move-up');
+                    const down = item.querySelector('.move-down');
+                    if (badge) badge.textContent = index + 1;
+                    if (up) up.disabled = index === 0;
+                    if (down) down.disabled = index === items.length - 1;
+                });
+                document.getElementById('columnOrderInput').value = JSON.stringify(order);
+            }
+
+            // Drag and drop
+            let draggedItem = null;
+
+            container.addEventListener('dragstart', function(e) {
+                const item = e.target.closest('.column-item');
+                if (!item) return;
+                const handle = item.querySelector('.drag-handle');
+                if (!handle || !handle.contains(e.target)) {
+                    e.preventDefault();
+                    return;
+                }
+                draggedItem = item;
+                item.classList.add('dragging');
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/plain', item.dataset.key);
+            });
+
+            container.addEventListener('dragend', function() {
+                if (draggedItem) {
+                    draggedItem.classList.remove('dragging');
+                    draggedItem = null;
+                }
+                container.querySelectorAll('.column-item').forEach(el => el.classList.remove('drag-over'));
+            });
+
+            container.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                const item = e.target.closest('.column-item');
+                if (!item || item === draggedItem) return;
+                e.dataTransfer.dropEffect = 'move';
+                container.querySelectorAll('.column-item').forEach(el => el.classList.remove('drag-over'));
+                item.classList.add('drag-over');
+            });
+
+            container.addEventListener('dragleave', function(e) {
+                const item = e.target.closest('.column-item');
+                if (item) item.classList.remove('drag-over');
+            });
+
+            container.addEventListener('drop', function(e) {
+                e.preventDefault();
+                const target = e.target.closest('.column-item');
+                if (!target) return;
+                target.classList.remove('drag-over');
+                if (draggedItem && target !== draggedItem) {
+                    const rect = target.getBoundingClientRect();
+                    const midY = rect.top + rect.height / 2;
+                    if (e.clientY < midY) {
+                        container.insertBefore(draggedItem, target);
+                    } else {
+                        container.insertBefore(draggedItem, target.nextElementSibling);
+                    }
+                    updateOrder();
+                }
+                draggedItem = null;
+            });
+
+            // Up/down buttons
+            container.addEventListener('click', function(e) {
+                const btn = e.target.closest('.move-up, .move-down');
+                if (!btn) return;
+                const item = btn.closest('.column-item');
+                if (!item) return;
+
+                const isUp = btn.classList.contains('move-up');
+                const sibling = isUp ? item.previousElementSibling : item.nextElementSibling;
+                if (!sibling) return;
+
+                if (isUp) {
+                    container.insertBefore(item, sibling);
+                } else {
+                    container.insertBefore(sibling, item);
+                }
+                updateOrder();
+            });
+        }
+
+        initColumnDrag();
+        document.addEventListener('livewire:navigated', initColumnDrag);
+    </script>
 </div>
 @endsection
