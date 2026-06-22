@@ -13,6 +13,7 @@ class OfficeForm extends Component
     public ?int $officeId = null;
     public string $wilaya_id = '';
     public string $wilaya_code = '';
+    public string $commune = '';
     public string $company_name = '';
     public string $phone = '';
     public string $address = '';
@@ -30,6 +31,7 @@ class OfficeForm extends Component
             $office = Office::with('wilaya')->findOrFail($id);
             $this->wilaya_id = (string) $office->wilaya_id;
             $this->wilaya_code = $office->wilaya->code;
+            $this->commune = $office->commune ?? '';
             $this->company_name = $office->company_name;
             $this->phone = $office->phone;
             $this->address = $office->address;
@@ -55,6 +57,7 @@ class OfficeForm extends Component
     {
         $data = $this->validate([
             'wilaya_id' => ['required', 'exists:wilayas,id'],
+            'commune' => ['nullable', 'string', 'max:200'],
             'company_name' => ['required', 'string', 'max:200'],
             'phone' => ['required', 'string', 'max:50'],
             'address' => ['required', 'string'],
@@ -71,7 +74,7 @@ class OfficeForm extends Component
         } else {
             Office::create($data);
             $this->dispatch('notify', message: 'Bureau créé avec succès.', type: 'success');
-            $this->reset(['wilaya_id', 'wilaya_code', 'company_name', 'phone', 'address', 'google_maps', 'display_order']);
+            $this->reset(['wilaya_id', 'wilaya_code', 'commune', 'company_name', 'phone', 'address', 'google_maps', 'display_order']);
         }
     }
 

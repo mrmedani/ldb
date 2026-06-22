@@ -19,6 +19,7 @@ class OfficesExport implements FromCollection, WithHeadings, WithMapping
         return [
             'Ordre',
             'Wilaya',
+            'Commune',
             'Code Wilaya',
             'Entreprise',
             'Téléphone',
@@ -33,6 +34,7 @@ class OfficesExport implements FromCollection, WithHeadings, WithMapping
         return [
             $office->display_order,
             $office->wilaya->name,
+            $office->commune ?? '',
             $office->wilaya->code,
             $office->company_name,
             $office->phone,

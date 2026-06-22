@@ -10,6 +10,7 @@ class Office extends Model
 {
     protected $fillable = [
         'wilaya_id',
+        'commune',
         'company_name',
         'phone',
         'address',

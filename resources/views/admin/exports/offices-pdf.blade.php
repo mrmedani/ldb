@@ -18,6 +18,7 @@
             <tr>
                 <th>Ordre</th>
                 <th>Wilaya</th>
+                <th>Commune</th>
                 <th>Code</th>
                 <th>Entreprise</th>
                 <th>Téléphone</th>
@@ -30,6 +31,7 @@
                 <tr>
                     <td>{{ $office->display_order }}</td>
                     <td>{{ $office->wilaya->name }}</td>
+                    <td>{{ $office->commune ?? '-' }}</td>
                     <td>{{ $office->wilaya->code }}</td>
                     <td>{{ $office->company_name }}</td>
                     <td>{{ $office->phone }}</td>

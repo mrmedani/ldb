@@ -109,6 +109,7 @@ class OfficeManager extends Component
         return Office::with('wilaya')
             ->when($this->search, fn($q) => $q->where(function ($q) {
                 $q->where('company_name', 'like', "%{$this->search}%")
+                  ->orWhere('commune', 'like', "%{$this->search}%")
                   ->orWhere('phone', 'like', "%{$this->search}%")
                   ->orWhereHas('wilaya', fn($q) => $q->where('name', 'like', "%{$this->search}%"));
             }))

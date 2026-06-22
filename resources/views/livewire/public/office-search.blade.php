@@ -57,6 +57,7 @@
                                 @endif
                             </div>
                         </th>
+                        <th class="px-5 py-4 text-left font-bold text-gray-500 uppercase tracking-wider text-xs">Commune</th>
                         @if($settings->show_code)
                             <th class="px-5 py-4 text-left font-bold text-gray-500 uppercase tracking-wider text-xs">Code</th>
                         @endif
@@ -91,6 +92,9 @@
                                     <i data-lucide="map-pin" class="w-3.5 h-3.5 text-gray-400"></i>
                                     {{ $office->wilaya->name }}
                                 </span>
+                            </td>
+                            <td class="px-5 py-4">
+                                <span class="text-gray-600">{{ $office->commune ?? '-' }}</span>
                             </td>
                             @if($settings->show_code)
                                 <td class="px-5 py-4">
