@@ -150,7 +150,9 @@
                                 <td class="px-6 py-4 text-center">
                                     @if($office->google_maps)
                                         <a href="{{ $office->google_maps }}" target="_blank" rel="noopener noreferrer" class="btn-secondary !py-1.5 !px-3 text-xs flex items-center justify-center gap-1.5 hover:!bg-primary hover:!text-white hover:!border-primary">
-                                            <i data-lucide="navigation" class="w-3.5 h-3.5"></i>
+                                            <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="#EA4335"/>
+                                            </svg>
                                             Itinéraire
                                         </a>
                                     @else
@@ -229,14 +231,14 @@
                         </div>
                     @endif
 
-                    @if($settings->show_maps && $office->google_maps)
                         <div class="pt-2">
                             <a href="{{ $office->google_maps }}" target="_blank" rel="noopener noreferrer" class="btn-secondary !py-2.5 w-full text-xs flex items-center justify-center gap-2 hover:!bg-primary hover:!text-white hover:!border-primary">
-                                <i data-lucide="navigation" class="w-4 h-4"></i>
+                                <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="#EA4335"/>
+                                </svg>
                                 Itinéraire Maps
                             </a>
                         </div>
-                    @endif
                 </div>
             @empty
                 <div class="px-6 py-16 text-center text-gray-500">
