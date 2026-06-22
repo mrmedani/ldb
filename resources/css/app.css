@@ -50,7 +50,7 @@
         @apply inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-white border border-border text-text rounded-lg text-sm font-semibold shadow-sm hover:bg-gray-50 hover:text-primary transition-all duration-200 active:scale-95;
     }
     .glass-panel {
-        @apply bg-surface/80 backdrop-blur-xl border border-white/40 shadow-premium;
+        @apply bg-surface border border-border shadow-premium sm:bg-surface/80 sm:backdrop-blur-xl sm:border-white/40;
     }
     .input-modern {
         @apply w-full rounded-xl border border-gray-200 bg-gray-50/50 px-4 py-2.5 text-sm transition-all duration-300 focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none hover:bg-gray-50/80;

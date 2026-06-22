@@ -83,8 +83,8 @@
     </script>
 </head>
 <body class="font-sans antialiased bg-background text-text selection:bg-primary/20 selection:text-primary-dark">
-    <!-- Ambient Background -->
-    <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none" aria-hidden="true">
+    <!-- Ambient Background (Desktop only for performance) -->
+    <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none hidden sm:block" aria-hidden="true">
         <div class="absolute -top-[20%] -right-[10%] w-[800px] h-[800px] rounded-full bg-primary/5 blur-[100px] mix-blend-multiply animate-pulse" style="animation-duration: 8s;"></div>
         <div class="absolute -bottom-[20%] -left-[10%] w-[600px] h-[600px] rounded-full bg-blue-300/10 blur-[80px] mix-blend-multiply animate-pulse" style="animation-duration: 10s;"></div>
         <div class="absolute top-[40%] left-[20%] w-[400px] h-[400px] rounded-full bg-indigo-300/5 blur-[100px] mix-blend-multiply"></div>
