@@ -15,7 +15,7 @@ class UpdateOfficeRequest extends FormRequest
     {
         return [
             'wilaya_id' => ['required', 'exists:wilayas,id'],
-            'commune' => ['nullable', 'string', 'max:200'],
+            'commune_id' => ['nullable', 'exists:communes,id'],
             'company_name' => ['required', 'string', 'max:200'],
             'phone' => ['required', 'string', 'max:50'],
             'address' => ['required', 'string'],

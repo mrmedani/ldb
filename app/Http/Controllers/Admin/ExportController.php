@@ -17,14 +17,14 @@ class ExportController extends Controller
 
     public function pdf()
     {
-        $offices = Office::with('wilaya')->ordered()->get();
+        $offices = Office::with(['wilaya', 'commune'])->ordered()->get();
         $pdf = Pdf::loadView('admin.exports.offices-pdf', ['offices' => $offices]);
         return $pdf->download('bureaux.pdf');
     }
 
     public function print()
     {
-        $offices = Office::with('wilaya')->ordered()->get();
+        $offices = Office::with(['wilaya', 'commune'])->ordered()->get();
         return view('admin.exports.offices-print', ['offices' => $offices]);
     }
 }

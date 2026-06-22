@@ -34,7 +34,7 @@ class OfficesExport implements FromCollection, WithHeadings, WithMapping
         return [
             $office->display_order,
             $office->wilaya->name,
-            $office->commune ?? '',
+            $office->commune?->name ?? '',
             $office->wilaya->code,
             $office->company_name,
             $office->phone,

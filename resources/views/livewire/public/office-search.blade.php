@@ -94,7 +94,7 @@
                                 </span>
                             </td>
                             <td class="px-5 py-4">
-                                <span class="text-gray-600">{{ $office->commune ?? '-' }}</span>
+                                <span class="text-gray-600">{{ $office->commune?->name ?? '-' }}</span>
                             </td>
                             @if($settings->show_code)
                                 <td class="px-5 py-4">

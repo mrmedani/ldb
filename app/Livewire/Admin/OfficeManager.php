@@ -106,12 +106,12 @@ class OfficeManager extends Component
 
     public function getOfficesProperty()
     {
-        return Office::with('wilaya')
+        return Office::with(['wilaya', 'commune'])
             ->when($this->search, fn($q) => $q->where(function ($q) {
                 $q->where('company_name', 'like', "%{$this->search}%")
-                  ->orWhere('commune', 'like', "%{$this->search}%")
                   ->orWhere('phone', 'like', "%{$this->search}%")
-                  ->orWhereHas('wilaya', fn($q) => $q->where('name', 'like', "%{$this->search}%"));
+                  ->orWhereHas('wilaya', fn($q) => $q->where('name', 'like', "%{$this->search}%"))
+                  ->orWhereHas('commune', fn($q) => $q->where('name', 'like', "%{$this->search}%"));
             }))
             ->when($this->filterWilaya, fn($q) => $q->where('wilaya_id', $this->filterWilaya))
             ->when($this->filterVisibility === 'visible', fn($q) => $q->where('is_visible', true))

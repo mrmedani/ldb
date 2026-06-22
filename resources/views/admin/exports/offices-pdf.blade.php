@@ -31,7 +31,7 @@
                 <tr>
                     <td>{{ $office->display_order }}</td>
                     <td>{{ $office->wilaya->name }}</td>
-                    <td>{{ $office->commune ?? '-' }}</td>
+                    <td>{{ $office->commune?->name ?? '-' }}</td>
                     <td>{{ $office->wilaya->code }}</td>
                     <td>{{ $office->company_name }}</td>
                     <td>{{ $office->phone }}</td>

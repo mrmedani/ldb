@@ -10,7 +10,7 @@ class Office extends Model
 {
     protected $fillable = [
         'wilaya_id',
-        'commune',
+        'commune_id',
         'company_name',
         'phone',
         'address',
@@ -18,6 +18,11 @@ class Office extends Model
         'display_order',
         'is_visible',
     ];
+
+    public function commune(): BelongsTo
+    {
+        return $this->belongsTo(Commune::class);
+    }
 
     protected function casts(): array
     {

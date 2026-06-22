@@ -122,7 +122,7 @@
                                 </span>
                             </td>
                             <td class="px-5 py-4">
-                                <span class="text-gray-600">{{ $office->commune ?? '-' }}</span>
+                                <span class="text-gray-600">{{ $office->commune?->name ?? '-' }}</span>
                             </td>
                             <td class="px-5 py-4">
                                 <span class="font-mono text-xs font-bold text-gray-500 bg-gray-100 px-2 py-1 rounded-md">{{ $office->wilaya->code }}</span>
