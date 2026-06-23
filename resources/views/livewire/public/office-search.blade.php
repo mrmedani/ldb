@@ -38,19 +38,31 @@
         </div>
     </div>
 
-    <!-- Search Input Area -->
-    <div class="relative mb-10 group">
-        <div class="absolute -inset-1 bg-gradient-to-r from-primary to-blue-500 rounded-2xl blur opacity-10 group-hover:opacity-20 transition duration-1000 group-hover:duration-200"></div>
-        <div class="relative glass-panel rounded-2xl flex items-center p-2 shadow-sm border border-border/50">
-            <i data-lucide="search" class="w-6 h-6 text-gray-400 ml-4 group-focus-within:text-primary transition-colors"></i>
-            <input type="text" placeholder="{{ $settings->search_placeholder ?? 'Rechercher par wilaya, commune, entreprise...' }}"
-                   wire:model.live.debounce.300ms="search"
-                   class="w-full bg-transparent border-0 focus:ring-0 text-text px-4 py-3 text-lg placeholder:text-gray-400 font-medium outline-none">
-            @if($search)
-                <button wire:click="$set('search', '')" class="p-2 text-gray-400 hover:text-gray-600 transition-colors mr-2">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
-            @endif
+    <!-- Search Input Area & Export -->
+    <div class="flex flex-col sm:flex-row gap-4 mb-10">
+        <div class="relative flex-1 group">
+            <div class="absolute -inset-1 bg-gradient-to-r from-primary to-blue-500 rounded-2xl blur opacity-10 group-hover:opacity-20 transition duration-1000 group-hover:duration-200"></div>
+            <div class="relative glass-panel rounded-2xl flex items-center p-2 shadow-sm border border-border/50">
+                <i data-lucide="search" class="w-6 h-6 text-gray-400 ml-4 group-focus-within:text-primary transition-colors"></i>
+                <input type="text" placeholder="{{ $settings->search_placeholder ?? 'Rechercher par wilaya, commune, entreprise...' }}"
+                       wire:model.live.debounce.300ms="search"
+                       class="w-full bg-transparent border-0 focus:ring-0 text-text px-4 py-3 text-lg placeholder:text-gray-400 font-medium outline-none">
+                @if($search)
+                    <button wire:click="$set('search', '')" class="p-2 text-gray-400 hover:text-gray-600 transition-colors mr-2">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                @endif
+            </div>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="flex items-center gap-3">
+            <a href="{{ route('public.offices.download-pdf', ['search' => $search, 'sort_field' => $sortField, 'sort_direction' => $sortDirection]) }}" 
+               class="btn-secondary w-full sm:w-auto !py-3.5 !px-5 !rounded-2xl flex items-center justify-center gap-2 hover:!bg-primary hover:!text-white hover:!border-primary transition-all duration-300 shadow-sm"
+               title="Télécharger la liste au format PDF">
+                <i data-lucide="file-down" class="w-5 h-5"></i>
+                <span class="font-bold">Télécharger PDF</span>
+            </a>
         </div>
     </div>
 

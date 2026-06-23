@@ -8,6 +8,7 @@ use App\Http\Controllers\Public\HomeController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/offices/download-pdf', [HomeController::class, 'downloadPdf'])->name('public.offices.download-pdf');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
