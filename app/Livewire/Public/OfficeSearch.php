@@ -6,12 +6,9 @@ use App\Models\Office;
 use App\Models\Setting;
 use App\Models\Wilaya;
 use Livewire\Component;
-use Livewire\WithPagination;
 
 class OfficeSearch extends Component
 {
-    use WithPagination;
-
     public string $search = '';
     public string $sortField = 'display_order';
     public string $sortDirection = 'asc';
@@ -19,11 +16,6 @@ class OfficeSearch extends Component
     protected $queryString = [
         'search' => ['except' => ''],
     ];
-
-    public function updatingSearch(): void
-    {
-        $this->resetPage();
-    }
 
     public function sortBy(string $field): void
     {
@@ -46,7 +38,7 @@ class OfficeSearch extends Component
                   ->orWhereHas('commune', fn($q) => $q->where('name', 'like', "%{$this->search}%"));
             }))
             ->orderBy($this->sortField, $this->sortDirection)
-            ->paginate(20);
+            ->get();
     }
 
     public function getSettingsProperty()

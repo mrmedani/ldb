@@ -77,8 +77,8 @@ class Setting extends Model
             'delivery_time' => ['label' => 'Délai livraison', 'toggle' => 'show_delivery_time'],
             'code' => ['label' => 'Code', 'toggle' => 'show_code'],
             'company' => ['label' => 'Entreprise', 'sort_field' => 'company_name', 'toggle' => 'show_company'],
-            'phone' => ['label' => 'Téléphone', 'toggle' => 'show_phone', 'th_class' => 'hidden sm:table-cell', 'td_class' => 'hidden sm:table-cell'],
-            'address' => ['label' => 'Adresse', 'toggle' => 'show_address', 'th_class' => 'hidden md:table-cell', 'td_class' => 'hidden md:table-cell max-w-xs truncate'],
+            'phone' => ['label' => 'Téléphone', 'toggle' => 'show_phone'],
+            'address' => ['label' => 'Adresse', 'toggle' => 'show_address'],
             'maps' => ['label' => 'Localisation', 'toggle' => 'show_maps', 'th_class' => 'text-center'],
         ];
 
