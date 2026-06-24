@@ -1,6 +1,15 @@
 @php
     $ordered = $settings->ordered_columns;
 @endphp
+<style>
+    /* Responsive: cards on mobile, table on desktop */
+    #desktop-table { display: none !important; }
+    #mobile-cards  { display: block !important; }
+    @media (min-width: 640px) {
+        #desktop-table { display: block !important; }
+        #mobile-cards  { display: none  !important; }
+    }
+</style>
 <div>
     <!-- Statistics Overview -->
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-6 mb-10">
@@ -68,8 +77,8 @@
 
     <!-- Results Table -->
     <div class="glass-panel rounded-2xl border border-border/50 shadow-premium overflow-hidden">
-        <!-- Desktop/Mobile Unified Table View -->
-        <div class="overflow-x-auto">
+        <!-- Desktop Table View (hidden on mobile, shown on sm+) -->
+        <div class="overflow-x-auto" id="desktop-table">
             <table class="w-full text-sm text-left">
                 <thead>
                     <tr class="bg-gray-50/50 border-b border-border/50 text-xs uppercase tracking-wider text-gray-500 font-bold">
@@ -185,6 +194,139 @@
                     @endforelse
                 </tbody>
             </table>
+        </div>
+
+        <!-- Mobile Cards List View (shown on mobile, hidden on sm+) -->
+        <div id="mobile-cards">
+            @forelse($offices as $office)
+                <div style="
+                    background:#ffffff;
+                    border-bottom: 1px solid rgba(0,0,0,0.07);
+                    padding: 0;
+                    overflow: hidden;
+                    position: relative;
+                ">
+                    {{-- Top gradient accent bar --}}
+                    <div style="height:4px;background:linear-gradient(90deg,#e63946 0%,#ff6b6b 100%);width:100%;"></div>
+
+                    <div style="padding:16px 16px 14px 16px;">
+                        {{-- Row 1: Wilaya name + Delivery badge --}}
+                        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+                            <div style="display:flex;align-items:center;gap:8px;flex:1;min-width:0;">
+                                <div style="
+                                    width:36px;height:36px;border-radius:10px;
+                                    background:linear-gradient(135deg,#e63946,#ff6b6b);
+                                    display:flex;align-items:center;justify-content:center;
+                                    color:white;font-weight:800;font-size:14px;
+                                    flex-shrink:0;box-shadow:0 4px 12px rgba(230,57,70,0.3);
+                                ">
+                                    {{ mb_substr($office->wilaya->name, 0, 1) }}
+                                </div>
+                                <div style="min-width:0;">
+                                    <div style="font-weight:800;font-size:15px;color:#111827;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                                        {{ $office->wilaya->name }}
+                                    </div>
+                                    @if($settings->show_code)
+                                        <div style="font-size:11px;font-weight:600;color:#9ca3af;margin-top:1px;">
+                                            Code : <span style="color:#6b7280;font-family:monospace;">{{ $office->wilaya->code }}</span>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                            @if($settings->show_delivery_time && $office->wilaya->delivery_time)
+                                <div style="
+                                    background:linear-gradient(135deg,#d1fae5,#a7f3d0);
+                                    border:1px solid #6ee7b7;
+                                    border-radius:20px;
+                                    padding:4px 10px;
+                                    font-size:11px;font-weight:700;color:#065f46;
+                                    white-space:nowrap;flex-shrink:0;margin-left:8px;
+                                    display:flex;align-items:center;gap:4px;
+                                ">
+                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2" stroke-linecap="round"/></svg>
+                                    {{ $office->wilaya->delivery_time }}
+                                </div>
+                            @endif
+                        </div>
+
+                        {{-- Row 2: Commune + Company --}}
+                        <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px;">
+                            @if($settings->show_company)
+                                <div style="display:flex;align-items:center;gap:8px;">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                                    <span style="font-size:13px;font-weight:600;color:#374151;">{{ $office->company_name }}</span>
+                                </div>
+                            @endif
+                            <div style="display:flex;align-items:center;gap:8px;">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                                <span style="font-size:13px;color:#6b7280;font-weight:500;">{{ $office->commune?->name ?? '—' }}</span>
+                            </div>
+                            @if($settings->show_address && $office->address)
+                                <div style="display:flex;align-items:flex-start;gap:8px;">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" style="flex-shrink:0;margin-top:2px;"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                                    <span style="font-size:12px;color:#9ca3af;line-height:1.5;">{{ $office->address }}</span>
+                                </div>
+                            @endif
+                        </div>
+
+                        {{-- Row 3: Phone + Maps buttons --}}
+                        <div style="display:flex;flex-direction:column;gap:8px;">
+                            @if($settings->show_phone && $office->phone)
+                                <div style="display:flex;gap:8px;">
+                                    <a href="tel:{{ $office->phone }}" style="
+                                        flex:1;
+                                        background:linear-gradient(135deg,#f0fdf4,#dcfce7);
+                                        border:1px solid #86efac;
+                                        border-radius:10px;
+                                        padding:10px 14px;
+                                        display:flex;align-items:center;justify-content:center;gap:8px;
+                                        text-decoration:none;color:#15803d;font-weight:700;font-size:13px;
+                                    ">
+                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81 19.79 19.79 0 01.01 2.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>
+                                        {{ $office->phone }}
+                                    </a>
+                                    @if($office->phone_secondary)
+                                        <a href="tel:{{ $office->phone_secondary }}" style="
+                                            flex:1;
+                                            background:#f9fafb;
+                                            border:1px solid #e5e7eb;
+                                            border-radius:10px;
+                                            padding:10px 14px;
+                                            display:flex;align-items:center;justify-content:center;gap:8px;
+                                            text-decoration:none;color:#4b5563;font-weight:600;font-size:13px;
+                                        ">
+                                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81 19.79 19.79 0 01.01 2.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>
+                                            {{ $office->phone_secondary }}
+                                        </a>
+                                    @endif
+                                </div>
+                            @endif
+
+                            @if($settings->show_maps && $office->google_maps)
+                                <a href="{{ $office->google_maps }}" target="_blank" rel="noopener noreferrer" style="
+                                    background:#fff;
+                                    border:1px solid #e5e7eb;
+                                    border-radius:10px;
+                                    padding:10px 14px;
+                                    display:flex;align-items:center;justify-content:center;gap:8px;
+                                    text-decoration:none;color:#374151;font-weight:600;font-size:13px;
+                                ">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="#EA4335"/>
+                                    </svg>
+                                    Voir sur Google Maps
+                                </a>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            @empty
+                <div style="padding:48px 24px;text-align:center;background:#fff;">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" stroke-width="1.5" style="margin:0 auto 12px;display:block;"><path d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0a2 2 0 01-2 2H6a2 2 0 01-2-2m16 0L12 17l-8-4"/></svg>
+                    <p style="font-weight:700;color:#374151;font-size:15px;margin:0 0 4px;">Aucun bureau trouvé</p>
+                    <p style="color:#9ca3af;font-size:13px;margin:0;">Essayez avec d'autres termes de recherche</p>
+                </div>
+            @endforelse
         </div>
     </div>
 </div>
