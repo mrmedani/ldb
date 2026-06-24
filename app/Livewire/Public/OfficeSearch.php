@@ -48,10 +48,37 @@ class OfficeSearch extends Component
 
     public function getStatsProperty(): array
     {
+        $groups = [];
+        $names = Office::visible()->pluck('company_name');
+
+        foreach ($names as $name) {
+            $normalized = trim(strtolower($name));
+            $firstWord = strtok($normalized, " \t\n\r\0\x0B");
+            $matched = false;
+
+            if (strlen($firstWord ?? '') >= 3) {
+                foreach ($groups as $i => $group) {
+                    $gFirst = strtok($group[0], " \t\n\r\0\x0B");
+                    if (strlen($gFirst ?? '') < 3) continue;
+                    $dist = levenshtein($firstWord, $gFirst);
+                    $maxLen = max(strlen($firstWord), strlen($gFirst));
+                    if ($maxLen > 0 && ($dist / $maxLen) < 0.35) {
+                        $groups[$i][] = $normalized;
+                        $matched = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!$matched) {
+                $groups[] = [$normalized];
+            }
+        }
+
         return [
             'wilayas' => Wilaya::count(),
             'offices' => Office::visible()->count(),
-            'partners' => Office::visible()->pluck('company_name')->map(fn($n) => trim(strtolower($n)))->unique()->count(),
+            'partners' => count($groups),
         ];
     }
 
