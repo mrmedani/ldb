@@ -207,7 +207,7 @@
                     position: relative;
                 ">
                     {{-- Top gradient accent bar --}}
-                    <div style="height:4px;background:linear-gradient(90deg,#e63946 0%,#ff6b6b 100%);width:100%;"></div>
+                    <div style="height:4px;background:linear-gradient(90deg,#f97316 0%,#fb923c 100%);width:100%;"></div>
 
                     <div style="padding:16px 16px 14px 16px;">
                         {{-- Row 1: Wilaya name + Delivery badge --}}
@@ -215,10 +215,10 @@
                             <div style="display:flex;align-items:center;gap:8px;flex:1;min-width:0;">
                                 <div style="
                                     width:36px;height:36px;border-radius:10px;
-                                    background:linear-gradient(135deg,#e63946,#ff6b6b);
+                                    background:linear-gradient(135deg,#f97316,#fb923c);
                                     display:flex;align-items:center;justify-content:center;
                                     color:white;font-weight:800;font-size:14px;
-                                    flex-shrink:0;box-shadow:0 4px 12px rgba(230,57,70,0.3);
+                                    flex-shrink:0;box-shadow:0 4px 12px rgba(249,115,22,0.3);
                                 ">
                                     {{ mb_substr($office->wilaya->name, 0, 1) }}
                                 </div>
