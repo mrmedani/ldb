@@ -5,7 +5,6 @@ namespace App\Livewire\Public;
 use App\Models\Office;
 use App\Models\Setting;
 use App\Models\Wilaya;
-use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class OfficeSearch extends Component
@@ -52,7 +51,7 @@ class OfficeSearch extends Component
         return [
             'wilayas' => Wilaya::count(),
             'offices' => Office::visible()->count(),
-            'partners' => Office::visible()->select(DB::raw('COUNT(DISTINCT LOWER(company_name))'))->value(DB::raw('COUNT(DISTINCT LOWER(company_name))')),
+            'partners' => Office::visible()->selectRaw('COUNT(DISTINCT LOWER(company_name)) as cnt')->value('cnt'),
         ];
     }
 
