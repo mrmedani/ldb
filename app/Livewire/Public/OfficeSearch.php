@@ -51,7 +51,7 @@ class OfficeSearch extends Component
         return [
             'wilayas' => Wilaya::count(),
             'offices' => Office::visible()->count(),
-            'partners' => Office::visible()->selectRaw('COUNT(DISTINCT LOWER(company_name)) as cnt')->value('cnt'),
+            'partners' => Office::visible()->pluck('company_name')->map(fn($n) => trim(strtolower($n)))->unique()->count(),
         ];
     }
 
