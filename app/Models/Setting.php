@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 class Setting extends Model
@@ -47,7 +48,9 @@ class Setting extends Model
 
     public static function getSettings(): self
     {
-        return self::first() ?? self::create([]);
+        return Cache::rememberForever('settings', function () {
+            return self::first() ?? self::create([]);
+        });
     }
 
     public function getFaviconUrlAttribute(): ?string
@@ -98,5 +101,8 @@ class Setting extends Model
 
     protected static function booted(): void
     {
+        static::saved(function () {
+            Cache::forget('settings');
+        });
     }
 }

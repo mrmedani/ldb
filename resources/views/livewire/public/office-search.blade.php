@@ -194,6 +194,9 @@
                     @endforelse
                 </tbody>
             </table>
+            <div class="border-t border-border/50 px-6 py-4">
+                {{ $offices->links(data: ['scrollTo' => false]) }}
+            </div>
         </div>
 
         <!-- Mobile Cards List View (shown on mobile, hidden on sm+) -->
@@ -327,6 +330,9 @@
                     <p style="color:#9ca3af;font-size:13px;margin:0;">Essayez avec d'autres termes de recherche</p>
                 </div>
             @endforelse
+            <div class="border-t border-black/5 px-4 py-3">
+                {{ $offices->links(data: ['scrollTo' => false]) }}
+            </div>
         </div>
     </div>
 </div>

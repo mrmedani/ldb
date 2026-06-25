@@ -139,6 +139,31 @@
                     <i data-lucide="settings" class="w-5 h-5 {{ request()->routeIs('admin.settings') ? 'text-primary' : 'text-gray-400 group-hover:text-gray-600 transition-colors' }}"></i>
                     <span>Paramètres système</span>
                 </a>
+
+                <div class="pt-4 mt-4 border-t border-border/50">
+                    <p class="px-3 text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Supervision</p>
+                    <a href="{{ route('admin.logs') }}" wire:navigate class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 group relative {{ request()->routeIs('admin.logs') ? 'text-primary bg-primary/10' : 'text-gray-600 hover:bg-gray-100/80 hover:text-gray-900' }}">
+                        @if(request()->routeIs('admin.logs'))
+                            <div class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-primary rounded-r-full"></div>
+                        @endif
+                        <i data-lucide="scroll-text" class="w-5 h-5 {{ request()->routeIs('admin.logs') ? 'text-primary' : 'text-gray-400 group-hover:text-gray-600 transition-colors' }}"></i>
+                        <span>Journal d'activité</span>
+                    </a>
+                    <a href="{{ route('admin.backups') }}" wire:navigate class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 group relative {{ request()->routeIs('admin.backups') ? 'text-primary bg-primary/10' : 'text-gray-600 hover:bg-gray-100/80 hover:text-gray-900' }}">
+                        @if(request()->routeIs('admin.backups'))
+                            <div class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-primary rounded-r-full"></div>
+                        @endif
+                        <i data-lucide="database-backup" class="w-5 h-5 {{ request()->routeIs('admin.backups') ? 'text-primary' : 'text-gray-400 group-hover:text-gray-600 transition-colors' }}"></i>
+                        <span>Sauvegardes DB</span>
+                    </a>
+                    <a href="{{ route('admin.bug-reports') }}" wire:navigate class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 group relative {{ request()->routeIs('admin.bug-reports') ? 'text-primary bg-primary/10' : 'text-gray-600 hover:bg-gray-100/80 hover:text-gray-900' }}">
+                        @if(request()->routeIs('admin.bug-reports'))
+                            <div class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-primary rounded-r-full"></div>
+                        @endif
+                        <i data-lucide="bug" class="w-5 h-5 {{ request()->routeIs('admin.bug-reports') ? 'text-primary' : 'text-gray-400 group-hover:text-gray-600 transition-colors' }}"></i>
+                        <span>Signalements bugs</span>
+                    </a>
+                </div>
             </nav>
             
             <div class="p-4 border-t border-border/50">
@@ -187,6 +212,18 @@
                             @if(request()->routeIs('admin.settings'))
                                 <li><i data-lucide="chevron-right" class="w-4 h-4 text-gray-400"></i></li>
                                 <li><span class="text-gray-900 font-semibold">Paramètres</span></li>
+                            @endif
+                            @if(request()->routeIs('admin.logs'))
+                                <li><i data-lucide="chevron-right" class="w-4 h-4 text-gray-400"></i></li>
+                                <li><span class="text-gray-900 font-semibold">Journal d'activité</span></li>
+                            @endif
+                            @if(request()->routeIs('admin.backups'))
+                                <li><i data-lucide="chevron-right" class="w-4 h-4 text-gray-400"></i></li>
+                                <li><span class="text-gray-900 font-semibold">Sauvegardes</span></li>
+                            @endif
+                            @if(request()->routeIs('admin.bug-reports'))
+                                <li><i data-lucide="chevron-right" class="w-4 h-4 text-gray-400"></i></li>
+                                <li><span class="text-gray-900 font-semibold">Signalements bugs</span></li>
                             @endif
                         </ol>
                     </nav>

@@ -6,16 +6,27 @@ use App\Models\Office;
 use App\Models\Setting;
 use App\Models\Wilaya;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class OfficeSearch extends Component
 {
+    use WithPagination;
+
     public string $search = '';
-    public string $sortField = 'display_order';
+    public string $sortField = 'wilaya_id';
     public string $sortDirection = 'asc';
+    public int $perPage = 50;
 
     protected $queryString = [
         'search' => ['except' => ''],
+        'sortField' => ['except' => 'wilaya_id'],
+        'sortDirection' => ['except' => 'asc'],
     ];
+
+    public function updatingSearch(): void
+    {
+        $this->resetPage();
+    }
 
     public function sortBy(string $field): void
     {
@@ -25,20 +36,7 @@ class OfficeSearch extends Component
             $this->sortField = $field;
             $this->sortDirection = 'asc';
         }
-    }
-
-    public function getOfficesProperty()
-    {
-        return Office::with(['wilaya', 'commune'])
-            ->visible()
-            ->when($this->search, fn($q) => $q->where(function ($q) {
-                $q->where('company_name', 'like', "%{$this->search}%")
-                  ->orWhere('phone', 'like', "%{$this->search}%")
-                  ->orWhereHas('wilaya', fn($q) => $q->where('name', 'like', "%{$this->search}%"))
-                  ->orWhereHas('commune', fn($q) => $q->where('name', 'like', "%{$this->search}%"));
-            }))
-            ->orderBy($this->sortField, $this->sortDirection)
-            ->get();
+        $this->resetPage();
     }
 
     public function getSettingsProperty()
@@ -52,7 +50,7 @@ class OfficeSearch extends Component
         $names = Office::visible()->pluck('company_name');
 
         foreach ($names as $name) {
-            $normalized = trim(strtolower($name));
+            $normalized = preg_replace('/\s+/', ' ', trim(strtolower($name)));
             $firstWord = strtok($normalized, " \t\n\r\0\x0B");
             $matched = false;
 
@@ -84,8 +82,20 @@ class OfficeSearch extends Component
 
     public function render()
     {
+        $offices = Office::with(['wilaya', 'commune'])
+            ->visible()
+            ->when($this->search, fn($q) => $q->where(function ($q) {
+                $q->where('company_name', 'like', "%{$this->search}%")
+                  ->orWhere('phone', 'like', "%{$this->search}%")
+                  ->orWhereHas('wilaya', fn($q) => $q->where('name', 'like', "%{$this->search}%"))
+                  ->orWhereHas('commune', fn($q) => $q->where('name', 'like', "%{$this->search}%"));
+            }))
+            ->orderBy($this->sortField, $this->sortDirection)
+            ->orderBy('display_order')
+            ->paginate($this->perPage);
+
         return view('livewire.public.office-search', [
-            'offices' => $this->offices,
+            'offices' => $offices,
             'settings' => $this->settings,
             'stats' => $this->stats,
         ]);

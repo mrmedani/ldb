@@ -1,8 +1,11 @@
 import './bootstrap';
 import { createIcons, icons } from 'lucide';
 
-document.addEventListener('livewire:navigated', () => {
+function initIcons() {
     createIcons({ icons });
-});
+}
 
-createIcons({ icons });
+document.addEventListener('livewire:navigated', initIcons);
+document.addEventListener('livewire:updated', initIcons);
+
+initIcons();

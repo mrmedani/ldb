@@ -66,6 +66,8 @@
         </div>
     </footer>
 
+    @livewire('public.bug-report-form')
+
     @livewireScripts
 
 </body>

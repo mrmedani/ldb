@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Wilaya;
+use App\Services\ActivityLogger;
 use Illuminate\Http\Request;
 
 class WilayaDeliveryController extends Controller
@@ -22,11 +23,15 @@ class WilayaDeliveryController extends Controller
             'wilayas.*.delivery_time' => 'nullable|string|max:100',
         ]);
 
+        $updated = 0;
         foreach ($data['wilayas'] as $item) {
             Wilaya::where('id', $item['id'])->update([
                 'delivery_time' => $item['delivery_time'] ?? null,
             ]);
+            $updated++;
         }
+
+        ActivityLogger::log('updated', 'wilaya', null, "Délais de livraison mis à jour pour {$updated} wilaya(s)");
 
         return redirect()->route('admin.wilayas.delivery')
             ->with('success', 'Délais de livraison mis à jour avec succès.');

@@ -47,4 +47,9 @@ class Office extends Model
     {
         return $query->orderBy('display_order')->orderBy('id');
     }
+
+    public function getCleanedCompanyNameAttribute(): string
+    {
+        return preg_replace('/\s+/', ' ', trim($this->company_name));
+    }
 }

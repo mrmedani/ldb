@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Setting;
+use App\Services\ActivityLogger;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
@@ -68,6 +69,8 @@ class SettingController extends Controller
         $settings->update($data);
 
         Cache::forget('settings');
+
+        ActivityLogger::log('updated', 'setting', 1, 'Paramètres système mis à jour');
 
         return redirect()->route('admin.settings')
             ->with('success', 'Paramètres mis à jour avec succès.');

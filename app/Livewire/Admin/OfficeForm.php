@@ -4,6 +4,7 @@ namespace App\Livewire\Admin;
 
 use App\Models\Office;
 use App\Models\Wilaya;
+use App\Services\ActivityLogger;
 use App\Http\Requests\StoreOfficeRequest;
 use App\Http\Requests\UpdateOfficeRequest;
 use Livewire\Component;
@@ -73,10 +74,14 @@ class OfficeForm extends Component
         $data['commune_id'] = $this->commune_id ?: null;
 
         if ($this->editing) {
-            Office::findOrFail($this->officeId)->update($data);
+            $office = Office::findOrFail($this->officeId);
+            $old = ['company_name' => $office->company_name, 'wilaya_id' => $office->wilaya_id];
+            $office->update($data);
+            ActivityLogger::log('updated', 'office', $office->id, "Bureau «{$office->company_name}» mis à jour", $old, ['company_name' => $data['company_name'], 'wilaya_id' => $data['wilaya_id']]);
             $this->dispatch('notify', message: 'Bureau mis à jour avec succès.', type: 'success');
         } else {
-            Office::create($data);
+            $office = Office::create($data);
+            ActivityLogger::log('created', 'office', $office->id, "Bureau «{$office->company_name}» créé");
             $this->dispatch('notify', message: 'Bureau créé avec succès.', type: 'success');
             $this->reset(['wilaya_id', 'wilaya_code', 'commune_id', 'company_name', 'phone', 'phone_secondary', 'address', 'google_maps', 'display_order']);
         }

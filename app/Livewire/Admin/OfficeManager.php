@@ -4,6 +4,7 @@ namespace App\Livewire\Admin;
 
 use App\Models\Office;
 use App\Models\Wilaya;
+use App\Services\ActivityLogger;
 use App\Services\OfficeService;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -47,27 +48,38 @@ class OfficeManager extends Component
     {
         $office = Office::findOrFail($id);
         $office->update(['is_visible' => !$office->is_visible]);
+        $status = $office->is_visible ? 'visible' : 'masqué';
+        ActivityLogger::log('visibility_toggled', 'office', $id, "Bureau «{$office->company_name}» {$status}");
     }
 
     public function moveUp(int $id): void
     {
-        app(OfficeService::class)->reorder(Office::findOrFail($id), 'up');
+        $office = Office::findOrFail($id);
+        app(OfficeService::class)->reorder($office, 'up');
+        ActivityLogger::log('reordered', 'office', $id, "Bureau «{$office->company_name}» déplacé vers le haut");
     }
 
     public function moveDown(int $id): void
     {
-        app(OfficeService::class)->reorder(Office::findOrFail($id), 'down');
+        $office = Office::findOrFail($id);
+        app(OfficeService::class)->reorder($office, 'down');
+        ActivityLogger::log('reordered', 'office', $id, "Bureau «{$office->company_name}» déplacé vers le bas");
     }
 
     public function deleteOffice(int $id): void
     {
-        Office::findOrFail($id)->delete();
+        $office = Office::findOrFail($id);
+        $name = $office->company_name;
+        $office->delete();
+        ActivityLogger::log('deleted', 'office', $id, "Bureau «{$name}» supprimé");
         $this->dispatch('notify', message: 'Bureau supprimé avec succès.', type: 'success');
     }
 
     public function deleteSelected(): void
     {
+        $names = Office::whereIn('id', $this->selected)->pluck('company_name')->implode(', ');
         app(OfficeService::class)->bulkDelete($this->selected);
+        ActivityLogger::log('bulk_deleted', 'office', null, "Bureaux supprimés en masse : {$names}", null, ['ids' => $this->selected]);
         $this->selected = [];
         $this->selectAll = false;
         $this->dispatch('notify', message: 'Bureaux supprimés avec succès.', type: 'success');
@@ -78,7 +90,9 @@ class OfficeManager extends Component
         $office = Office::find($this->selected[0] ?? 0);
         if ($office) {
             $visible = !$office->is_visible;
+            $status = $visible ? 'visibles' : 'masqués';
             app(OfficeService::class)->bulkToggleVisibility($this->selected, $visible);
+            ActivityLogger::log('bulk_visibility', 'office', null, count($this->selected) . " bureau(x) {$status}", null, ['ids' => $this->selected, 'visible' => $visible]);
             $this->dispatch('notify', message: 'Visibilité mise à jour.', type: 'success');
         }
     }
@@ -101,6 +115,7 @@ class OfficeManager extends Component
     public function updateOrder(array $items): void
     {
         app(OfficeService::class)->updateOrder($items);
+        ActivityLogger::log('reordered', 'office', null, 'Ordre d\'affichage réorganisé (drag & drop)');
         $this->dispatch('notify', message: 'Ordre mis à jour.', type: 'success');
     }
 
