@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Cache;
 
 class Office extends Model
 {
@@ -51,5 +52,11 @@ class Office extends Model
     public function getCleanedCompanyNameAttribute(): string
     {
         return preg_replace('/\s+/', ' ', trim($this->company_name));
+    }
+
+    protected static function booted(): void
+    {
+        static::saved(fn() => Cache::forget('public_stats'));
+        static::deleted(fn() => Cache::forget('public_stats'));
     }
 }

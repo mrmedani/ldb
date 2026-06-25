@@ -5,6 +5,7 @@ namespace App\Livewire\Public;
 use App\Models\Office;
 use App\Models\Setting;
 use App\Models\Wilaya;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -46,38 +47,40 @@ class OfficeSearch extends Component
 
     public function getStatsProperty(): array
     {
-        $groups = [];
-        $names = Office::visible()->pluck('company_name');
+        return Cache::remember('public_stats', 3600, function () {
+            $groups = [];
+            $names = Office::visible()->pluck('company_name');
 
-        foreach ($names as $name) {
-            $normalized = preg_replace('/\s+/', ' ', trim(strtolower($name)));
-            $firstWord = strtok($normalized, " \t\n\r\0\x0B");
-            $matched = false;
+            foreach ($names as $name) {
+                $normalized = preg_replace('/\s+/', ' ', trim(strtolower($name)));
+                $firstWord = strtok($normalized, " \t\n\r\0\x0B");
+                $matched = false;
 
-            if (strlen($firstWord ?? '') >= 3) {
-                foreach ($groups as $i => $group) {
-                    $gFirst = strtok($group[0], " \t\n\r\0\x0B");
-                    if (strlen($gFirst ?? '') < 3) continue;
-                    $dist = levenshtein($firstWord, $gFirst);
-                    $maxLen = max(strlen($firstWord), strlen($gFirst));
-                    if ($maxLen > 0 && ($dist / $maxLen) < 0.35) {
-                        $groups[$i][] = $normalized;
-                        $matched = true;
-                        break;
+                if (strlen($firstWord ?? '') >= 3) {
+                    foreach ($groups as $i => $group) {
+                        $gFirst = strtok($group[0], " \t\n\r\0\x0B");
+                        if (strlen($gFirst ?? '') < 3) continue;
+                        $dist = levenshtein($firstWord, $gFirst);
+                        $maxLen = max(strlen($firstWord), strlen($gFirst));
+                        if ($maxLen > 0 && ($dist / $maxLen) < 0.35) {
+                            $groups[$i][] = $normalized;
+                            $matched = true;
+                            break;
+                        }
                     }
+                }
+
+                if (!$matched) {
+                    $groups[] = [$normalized];
                 }
             }
 
-            if (!$matched) {
-                $groups[] = [$normalized];
-            }
-        }
-
-        return [
-            'wilayas' => Wilaya::count(),
-            'offices' => Office::visible()->count(),
-            'partners' => count($groups),
-        ];
+            return [
+                'wilayas' => Wilaya::count(),
+                'offices' => Office::visible()->count(),
+                'partners' => count($groups),
+            ];
+        });
     }
 
     public function render()

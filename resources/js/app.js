@@ -6,6 +6,6 @@ function initIcons() {
 }
 
 document.addEventListener('livewire:navigated', initIcons);
-document.addEventListener('livewire:updated', initIcons);
+document.addEventListener('livewire:update', initIcons);
 
 initIcons();
