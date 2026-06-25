@@ -54,7 +54,7 @@
             <div class="relative glass-panel rounded-2xl flex items-center p-2 shadow-sm border border-border/50">
                 <i data-lucide="search" class="w-6 h-6 text-gray-400 ml-4 group-focus-within:text-primary transition-colors"></i>
                 <input type="text" placeholder="{{ $settings->search_placeholder ?? 'Rechercher par wilaya, commune, entreprise...' }}"
-                       wire:model.live.debounce.300ms="search"
+                       wire:model.live="search"
                        class="w-full bg-transparent border-0 focus:ring-0 text-text px-4 py-3 text-lg placeholder:text-gray-400 font-medium outline-none">
                 @if($search)
                     <button wire:click="$set('search', '')" class="p-2 text-gray-400 hover:text-gray-600 transition-colors mr-2">
