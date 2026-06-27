@@ -8,12 +8,23 @@
                 <h1 class="text-2xl font-extrabold text-text">Sauvegardes de la base</h1>
                 <p class="text-gray-500 font-medium mt-1">Générer et télécharger les sauvegardes automatiques</p>
             </div>
-            <a href="{{ route('admin.backups.run') }}"
-               class="btn-primary !py-2.5 !px-5 !rounded-xl flex items-center gap-2"
-               onclick="return confirm('Lancer une sauvegarde maintenant ?')">
-                <i data-lucide="database-backup" class="w-5 h-5"></i>
-                Lancer la sauvegarde
-            </a>
+            <div class="flex items-center gap-3">
+                <a href="{{ route('admin.backups.run') }}"
+                   class="btn-primary !py-2.5 !px-5 !rounded-xl flex items-center gap-2"
+                   onclick="return confirm('Lancer une sauvegarde maintenant ?')">
+                    <i data-lucide="database-backup" class="w-5 h-5"></i>
+                    Lancer la sauvegarde
+                </a>
+                <button type="button" onclick="document.getElementById('restore-input').click()"
+                   class="btn-secondary !py-2.5 !px-5 !rounded-xl flex items-center gap-2 hover:!bg-amber-500 hover:!text-white hover:!border-amber-500 !border-amber-300 !text-amber-700">
+                    <i data-lucide="upload" class="w-5 h-5"></i>
+                    Restaurer une sauvegarde
+                </button>
+                <form id="restore-form" action="{{ route('admin.backups.restore') }}" method="POST" enctype="multipart/form-data" class="hidden">
+                    @csrf
+                    <input id="restore-input" type="file" name="backup" accept=".sql,.sql.gz,.gz" onchange="if(this.files.length > 0 && confirm('ATTENTION : Cela va écraser TOUTE la base de données. Continuer ?')) document.getElementById('restore-form').submit()">
+                </form>
+            </div>
         </div>
 
         <div class="glass-panel rounded-2xl border border-border/50 shadow-premium overflow-hidden">
