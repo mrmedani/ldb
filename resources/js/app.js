@@ -5,13 +5,13 @@ function initIcons() {
     createIcons({ icons });
 }
 
+window.initIcons = initIcons;
+
 document.addEventListener('livewire:navigated', initIcons);
 
-const iconObserver = new MutationObserver(() => {
-    if (document.querySelector('[data-lucide]:not(.lucide)')) {
-        initIcons();
-    }
+document.addEventListener('livewire:initialized', () => {
+    Livewire.hook('morph.added', initIcons);
+    Livewire.hook('morph.updated', initIcons);
 });
-iconObserver.observe(document.body, { childList: true, subtree: true });
 
 initIcons();
