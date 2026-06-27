@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@source "../views/**/*.blade.php";
 
 @plugin "@tailwindcss/forms";
 

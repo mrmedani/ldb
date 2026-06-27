@@ -199,12 +199,6 @@
             </table>
         </div>
 
-        {{-- Pagination footer (desktop table) --}}
-        @if($offices->hasPages())
-            <div class="border-t border-border/50 px-6 py-4 bg-gray-50/30">
-                {{ $offices->links() }}
-            </div>
-        @endif
 
         <!-- Mobile Cards List View (shown on mobile, hidden on sm+) -->
         <div id="mobile-cards">
@@ -340,9 +334,9 @@
 
         </div>
 
-        {{-- Pagination footer (mobile cards) --}}
+        {{-- Pagination — unique, partagée desktop + mobile --}}
         @if($offices->hasPages())
-            <div class="border-t border-border/50 px-4 py-4 bg-gray-50/30">
+            <div class="border-t border-border/50 px-6 py-4 bg-gray-50/30">
                 {{ $offices->links() }}
             </div>
         @endif
