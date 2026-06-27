@@ -6,6 +6,12 @@ function initIcons() {
 }
 
 document.addEventListener('livewire:navigated', initIcons);
-window.addEventListener('livewire:updated', initIcons);
+
+const iconObserver = new MutationObserver(() => {
+    if (document.querySelector('[data-lucide]:not(.lucide)')) {
+        initIcons();
+    }
+});
+iconObserver.observe(document.body, { childList: true, subtree: true });
 
 initIcons();
