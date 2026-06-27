@@ -55,11 +55,23 @@
                                         {{ \Carbon\Carbon::createFromTimestamp($file['last_modified'])->format('d/m/Y H:i') }}
                                     </td>
                                     <td class="px-6 py-4 text-right">
-                                        <a href="{{ route('admin.backups.download', $file['name']) }}"
-                                           class="btn-secondary !py-1.5 !px-3 text-xs flex items-center gap-1.5 inline-flex hover:!bg-primary hover:!text-white hover:!border-primary">
-                                            <i data-lucide="download" class="w-3.5 h-3.5"></i>
-                                            Télécharger
-                                        </a>
+                                        <div class="flex items-center justify-end gap-2">
+                                            <a href="{{ route('admin.backups.download', $file['name']) }}"
+                                               class="btn-secondary !py-1.5 !px-3 text-xs flex items-center gap-1.5 inline-flex hover:!bg-primary hover:!text-white hover:!border-primary">
+                                                <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                                                Télécharger
+                                            </a>
+                                            <form action="{{ route('admin.backups.destroy', $file['name']) }}" method="POST"
+                                                  onsubmit="return confirm('Supprimer cette sauvegarde ?')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit"
+                                                   class="btn-secondary !py-1.5 !px-3 text-xs flex items-center gap-1.5 inline-flex hover:!bg-red-500 hover:!text-white hover:!border-red-500 !border-red-200 !text-red-600">
+                                                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                                                    Supprimer
+                                                </button>
+                                            </form>
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach

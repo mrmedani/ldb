@@ -28,6 +28,21 @@ class BackupController extends Controller
         return view('admin.backups.index', compact('files'));
     }
 
+    public function destroy(string $filename)
+    {
+        $path = storage_path('app/backups/' . basename($filename));
+
+        if (!file_exists($path)) {
+            return redirect()->route('admin.backups')
+                ->with('error', 'Sauvegarde introuvable.');
+        }
+
+        unlink($path);
+
+        return redirect()->route('admin.backups')
+            ->with('success', 'Sauvegarde supprimée.');
+    }
+
     public function download(string $filename)
     {
         $path = storage_path('app/backups/' . basename($filename));

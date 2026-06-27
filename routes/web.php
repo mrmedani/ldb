@@ -49,6 +49,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::get('/backups', [BackupController::class, 'index'])->name('backups');
     Route::get('/backups/download/{filename}', [BackupController::class, 'download'])->name('backups.download');
     Route::get('/backups/run', [BackupController::class, 'run'])->name('backups.run');
+    Route::delete('/backups/{filename}', [BackupController::class, 'destroy'])->name('backups.destroy');
 
     Route::get('/bug-reports', function () {
         return view('admin.bug-reports');
