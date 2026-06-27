@@ -35,12 +35,21 @@ class BugReportForm extends Component
 
         $this->reset(['name', 'email', 'message']);
         $this->sent = true;
+
+        $this->dispatch('icon-refresh');
     }
 
     public function resetForm(): void
     {
         $this->reset(['name', 'email', 'message', 'sent']);
         $this->show = false;
+
+        $this->dispatch('icon-refresh');
+    }
+
+    public function updatedShow(): void
+    {
+        $this->dispatch('icon-refresh');
     }
 
     public function render()
