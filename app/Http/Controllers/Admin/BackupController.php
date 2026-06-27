@@ -35,10 +35,17 @@ class BackupController extends Controller
             'backup' => 'required|file|mimes:sql,gz,gzip|max:204800',
         ]);
 
+        $driver = DB::getDriverName();
+
+        // Vérifier que le driver correspond au backup MySQL
+        if ($driver !== 'mysql') {
+            return redirect()->route('admin.backups')
+                ->with('error', "Restauration impossible : la base locale est en «{$driver}» mais la sauvegarde est au format MySQL. Change DB_CONNECTION=mysql dans .env pour importer.");
+        }
+
         $file = $request->file('backup');
         $content = file_get_contents($file->getRealPath());
 
-        // Décompresser si gzippé
         if ($file->getClientOriginalExtension() === 'gz' || $file->getMimeType() === 'application/gzip') {
             $decoded = gzdecode($content);
             if ($decoded === false) {
@@ -49,12 +56,8 @@ class BackupController extends Controller
         }
 
         try {
-            DB::beginTransaction();
-
-            // Désactiver les contraintes
             DB::statement('SET FOREIGN_KEY_CHECKS = 0');
 
-            // Exécuter chaque requête SQL
             $statements = explode(";\n", $content);
             foreach ($statements as $statement) {
                 $statement = trim($statement);
@@ -63,22 +66,19 @@ class BackupController extends Controller
                 }
             }
 
-            // Réactiver les contraintes
             DB::statement('SET FOREIGN_KEY_CHECKS = 1');
 
-            DB::commit();
-
-            // Vider le cache
             try {
                 \Illuminate\Support\Facades\Artisan::call('optimize:clear');
             } catch (\Throwable $e) {
-                // Ignorer si la commande échoue
             }
+
+            // Reconnecter pour actualiser l'état
+            DB::reconnect();
 
             return redirect()->route('admin.backups')
                 ->with('success', 'Base de données restaurée avec succès.');
         } catch (\Throwable $e) {
-            DB::rollBack();
             return redirect()->route('admin.backups')
                 ->with('error', 'Erreur lors de la restauration : ' . $e->getMessage());
         }
