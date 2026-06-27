@@ -7,12 +7,16 @@ use App\Models\Setting;
 use App\Models\Wilaya;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
+use Livewire\WithPagination;
+
 class OfficeSearch extends Component
 {
+    use WithPagination;
 
     public string $search = '';
     public string $sortField = 'wilaya_id';
     public string $sortDirection = 'asc';
+    public int $perPage = 20;
 
     protected $queryString = [
         'search'        => ['except' => ''],
@@ -23,6 +27,18 @@ class OfficeSearch extends Component
     // When search changes
     public function updatingSearch(): void
     {
+        $this->resetPage();
+    }
+
+    public function sortBy(string $field): void
+    {
+        if ($this->sortField === $field) {
+            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sortField = $field;
+            $this->sortDirection = 'asc';
+        }
+        $this->resetPage();
     }
 
     public function getSettingsProperty()
@@ -80,7 +96,7 @@ class OfficeSearch extends Component
             }))
             ->orderBy($this->sortField, $this->sortDirection)
             ->orderBy('display_order')
-            ->get();
+            ->paginate($this->perPage);
 
         return view('livewire.public.office-search', [
             'offices'  => $offices,

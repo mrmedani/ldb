@@ -333,5 +333,12 @@
             @endforelse
 
         </div>
+
+        {{-- Pagination — unique, partagée desktop + mobile --}}
+        @if($offices->hasPages())
+            <div class="border-t border-border/50 px-6 py-4 bg-gray-50/30">
+                {{ $offices->links() }}
+            </div>
+        @endif
     </div>
 </div>

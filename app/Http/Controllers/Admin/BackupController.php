@@ -41,13 +41,18 @@ class BackupController extends Controller
 
     public function run()
     {
-        $exitCode = \Illuminate\Support\Facades\Artisan::call('ldb:backup');
+        try {
+            $exitCode = \Illuminate\Support\Facades\Artisan::call('ldb:backup');
 
-        $message = $exitCode === 0
-            ? 'Sauvegarde créée avec succès.'
-            : 'Erreur lors de la création de la sauvegarde.';
+            $message = $exitCode === 0
+                ? 'Sauvegarde créée avec succès.'
+                : 'Erreur lors de la création de la sauvegarde : ' . \Illuminate\Support\Facades\Artisan::output();
 
-        return redirect()->route('admin.backups')
-            ->with('success', $message);
+            return redirect()->route('admin.backups')
+                ->with($exitCode === 0 ? 'success' : 'error', $message);
+        } catch (\Throwable $e) {
+            return redirect()->route('admin.backups')
+                ->with('error', 'Erreur serveur : ' . $e->getMessage());
+        }
     }
 }
