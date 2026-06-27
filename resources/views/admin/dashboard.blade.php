@@ -68,16 +68,17 @@
     </div>
 
     @if($pendingBugReports > 0)
-    <div class="glass-panel rounded-2xl p-6 mb-6 border border-amber-200/50 bg-amber-50/50">
-        <div class="flex items-center gap-4">
-            <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center shrink-0">
-                <i data-lucide="bug" class="w-6 h-6"></i>
+    <div class="relative rounded-2xl p-6 mb-6 border-l-4 border-l-red-500 border border-red-200 bg-gradient-to-r from-red-50 to-amber-50 shadow-lg overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-red-500/[0.03] to-transparent pointer-events-none"></div>
+        <div class="flex items-center gap-4 relative">
+            <div class="w-14 h-14 rounded-2xl bg-red-100 text-red-600 flex items-center justify-center shrink-0 shadow-sm ring-2 ring-red-200/50">
+                <i data-lucide="bug" class="w-7 h-7"></i>
             </div>
             <div class="flex-1">
-                <p class="font-extrabold text-text">{{ $pendingBugReports }} signalement{{ $pendingBugReports > 1 ? 's' : '' }} de bug en attente</p>
-                <p class="text-sm text-gray-500 font-medium">Des visiteurs ont signalé des problèmes à examiner.</p>
+                <p class="text-lg font-extrabold text-red-800">{{ $pendingBugReports }} signalement{{ $pendingBugReports > 1 ? 's' : '' }} de bug en attente</p>
+                <p class="text-sm font-semibold text-red-600/80">Des visiteurs ont signalé des problèmes à examiner.</p>
             </div>
-            <a href="{{ route('admin.bug-reports') }}" class="inline-flex items-center gap-2 px-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-sm font-bold shadow-sm transition-all hover:-translate-y-0.5 active:scale-95">
+            <a href="{{ route('admin.bug-reports') }}" class="inline-flex items-center gap-2 px-5 py-3 bg-red-500 hover:bg-red-600 text-white rounded-xl text-sm font-bold shadow-md shadow-red-200 transition-all hover:-translate-y-0.5 active:scale-95">
                 Voir les signalements
                 <i data-lucide="arrow-right" class="w-4 h-4"></i>
             </a>
