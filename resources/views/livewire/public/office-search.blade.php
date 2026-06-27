@@ -1,16 +1,17 @@
 @php
     $ordered = $settings->ordered_columns;
 @endphp
-<style>
-    /* Responsive: cards on mobile, table on desktop */
-    #desktop-table { display: none !important; }
-    #mobile-cards  { display: block !important; }
-    @media (min-width: 640px) {
-        #desktop-table { display: block !important; }
-        #mobile-cards  { display: none  !important; }
-    }
-</style>
 <div>
+    {{-- Responsive: cards on mobile, table on desktop --}}
+    <style>
+        #desktop-table { display: none !important; }
+        #mobile-cards  { display: block !important; }
+        @@media (min-width: 640px) {
+            #desktop-table { display: block !important; }
+            #mobile-cards  { display: none  !important; }
+        }
+    </style>
+
     <!-- Statistics Overview -->
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-6 mb-10">
         <div class="glass-panel rounded-2xl p-6 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 relative overflow-hidden group cursor-default">
@@ -53,8 +54,9 @@
             <div class="absolute -inset-1 bg-gradient-to-r from-primary to-blue-500 rounded-2xl blur opacity-10 group-hover:opacity-20 transition duration-1000 group-hover:duration-200"></div>
             <div class="relative glass-panel rounded-2xl flex items-center p-2 shadow-sm border border-border/50">
                 <i data-lucide="search" class="w-6 h-6 text-gray-400 ml-4 group-focus-within:text-primary transition-colors"></i>
-                <input type="text" placeholder="{{ $settings->search_placeholder ?? 'Rechercher par wilaya, commune, entreprise...' }}"
-                       wire:model.live="search"
+                <input type="text"
+                       placeholder="{{ $settings->search_placeholder ?? 'Rechercher par wilaya, commune, entreprise...' }}"
+                       wire:model.live.debounce.400ms="search"
                        class="w-full bg-transparent border-0 focus:ring-0 text-text px-4 py-3 text-lg placeholder:text-gray-400 font-medium outline-none">
                 @if($search)
                     <button wire:click="$set('search', '')" class="p-2 text-gray-400 hover:text-gray-600 transition-colors mr-2">
@@ -63,10 +65,10 @@
                 @endif
             </div>
         </div>
-        
+
         <!-- Action Buttons -->
         <div class="flex items-center gap-3">
-            <a href="{{ route('public.offices.download-pdf', ['search' => $search, 'sort_field' => $sortField, 'sort_direction' => $sortDirection]) }}" 
+            <a href="{{ route('public.offices.download-pdf', ['search' => $search, 'sort_field' => $sortField, 'sort_direction' => $sortDirection]) }}"
                class="btn-secondary w-full sm:w-auto !py-3.5 !px-5 !rounded-2xl flex items-center justify-center gap-2 hover:!bg-primary hover:!text-white hover:!border-primary transition-all duration-300 shadow-sm"
                title="Télécharger la liste au format PDF">
                 <i data-lucide="file-down" class="w-5 h-5"></i>
@@ -74,6 +76,7 @@
             </a>
         </div>
     </div>
+
 
     <!-- Results Table -->
     <div class="glass-panel rounded-2xl border border-border/50 shadow-premium overflow-hidden">
@@ -194,10 +197,14 @@
                     @endforelse
                 </tbody>
             </table>
-            <div class="border-t border-border/50 px-6 py-4">
-                {{ $offices->links(data: ['scrollTo' => false]) }}
-            </div>
         </div>
+
+        {{-- Pagination footer (desktop table) --}}
+        @if($offices->hasPages())
+            <div class="border-t border-border/50 px-6 py-4 bg-gray-50/30">
+                {{ $offices->links() }}
+            </div>
+        @endif
 
         <!-- Mobile Cards List View (shown on mobile, hidden on sm+) -->
         <div id="mobile-cards">
@@ -330,9 +337,14 @@
                     <p style="color:#9ca3af;font-size:13px;margin:0;">Essayez avec d'autres termes de recherche</p>
                 </div>
             @endforelse
-            <div class="border-t border-black/5 px-4 py-3">
-                {{ $offices->links(data: ['scrollTo' => false]) }}
-            </div>
+
         </div>
+
+        {{-- Pagination footer (mobile cards) --}}
+        @if($offices->hasPages())
+            <div class="border-t border-border/50 px-4 py-4 bg-gray-50/30">
+                {{ $offices->links() }}
+            </div>
+        @endif
     </div>
 </div>

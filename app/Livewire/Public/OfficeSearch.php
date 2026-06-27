@@ -16,19 +16,21 @@ class OfficeSearch extends Component
     public string $search = '';
     public string $sortField = 'wilaya_id';
     public string $sortDirection = 'asc';
-    public int $perPage = 50;
+    public int $perPage = 20;
 
     protected $queryString = [
-        'search' => ['except' => ''],
-        'sortField' => ['except' => 'wilaya_id'],
+        'search'        => ['except' => ''],
+        'sortField'     => ['except' => 'wilaya_id'],
         'sortDirection' => ['except' => 'asc'],
     ];
 
+    // Reset to page 1 when search changes
     public function updatingSearch(): void
     {
         $this->resetPage();
     }
 
+    // Reset to page 1 when sorting changes
     public function sortBy(string $field): void
     {
         if ($this->sortField === $field) {
@@ -76,8 +78,8 @@ class OfficeSearch extends Component
             }
 
             return [
-                'wilayas' => Wilaya::count(),
-                'offices' => Office::visible()->count(),
+                'wilayas'  => Wilaya::count(),
+                'offices'  => Office::visible()->count(),
                 'partners' => count($groups),
             ];
         });
@@ -98,9 +100,9 @@ class OfficeSearch extends Component
             ->paginate($this->perPage);
 
         return view('livewire.public.office-search', [
-            'offices' => $offices,
+            'offices'  => $offices,
             'settings' => $this->settings,
-            'stats' => $this->stats,
+            'stats'    => $this->stats,
         ]);
     }
 }
