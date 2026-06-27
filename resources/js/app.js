@@ -10,8 +10,10 @@ window.initIcons = initIcons;
 document.addEventListener('livewire:navigated', initIcons);
 
 document.addEventListener('livewire:initialized', () => {
-    Livewire.hook('morph.added', initIcons);
-    Livewire.hook('morph.updated', initIcons);
+    let morphTimer;
+    const deferredInit = () => { clearTimeout(morphTimer); morphTimer = setTimeout(initIcons, 0); };
+    Livewire.hook('morph.added', deferredInit);
+    Livewire.hook('morph.updated', deferredInit);
 });
 
 initIcons();

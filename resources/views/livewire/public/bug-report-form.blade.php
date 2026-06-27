@@ -1,6 +1,6 @@
 <div>
     <!-- Trigger Button -->
-    <button x-data @click="$wire.show = true; $nextTick(() => { if (window.initIcons) window.initIcons(); })" class="fixed bottom-6 left-6 z-50 flex items-center gap-2 px-4 py-2.5 bg-white/90 backdrop-blur-sm border border-red-200/50 rounded-2xl shadow-premium text-sm font-semibold text-red-600 hover:bg-red-50 hover:border-red-300 transition-all duration-200 hover:-translate-y-0.5 active:scale-95 group">
+    <button wire:click="$set('show', true)" class="fixed bottom-6 left-6 z-50 flex items-center gap-2 px-4 py-2.5 bg-white/90 backdrop-blur-sm border border-red-200/50 rounded-2xl shadow-premium text-sm font-semibold text-red-600 hover:bg-red-50 hover:border-red-300 transition-all duration-200 hover:-translate-y-0.5 active:scale-95 group">
         <i data-lucide="bug" class="w-4 h-4 group-hover:rotate-12 transition-transform"></i>
         <span class="hidden sm:inline">Signaler un bug</span>
     </button>
