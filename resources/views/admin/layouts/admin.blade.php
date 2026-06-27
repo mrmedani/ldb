@@ -156,12 +156,16 @@
                         <i data-lucide="database-backup" class="w-5 h-5 {{ request()->routeIs('admin.backups') ? 'text-primary' : 'text-gray-400 group-hover:text-gray-600 transition-colors' }}"></i>
                         <span>Sauvegardes DB</span>
                     </a>
+                    @php $pendingBugReportsCount = App\Models\BugReport::pending()->count(); @endphp
                     <a href="{{ route('admin.bug-reports') }}" wire:navigate class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 group relative {{ request()->routeIs('admin.bug-reports') ? 'text-primary bg-primary/10' : 'text-gray-600 hover:bg-gray-100/80 hover:text-gray-900' }}">
                         @if(request()->routeIs('admin.bug-reports'))
                             <div class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-primary rounded-r-full"></div>
                         @endif
                         <i data-lucide="bug" class="w-5 h-5 {{ request()->routeIs('admin.bug-reports') ? 'text-primary' : 'text-gray-400 group-hover:text-gray-600 transition-colors' }}"></i>
-                        <span>Signalements bugs</span>
+                        <span class="flex-1">Signalements bugs</span>
+                        @if($pendingBugReportsCount > 0)
+                            <span class="inline-flex items-center justify-center px-2 py-0.5 text-xs font-bold text-white bg-red-500 rounded-full min-w-[20px]">{{ $pendingBugReportsCount }}</span>
+                        @endif
                     </a>
                 </div>
             </nav>

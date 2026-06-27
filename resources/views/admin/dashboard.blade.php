@@ -14,6 +14,7 @@
         $visibleOffices = App\Models\Office::where('is_visible', true)->count();
         $hiddenOffices = App\Models\Office::where('is_visible', false)->count();
         $lastModified = App\Models\Office::latest('updated_at')->first();
+        $pendingBugReports = App\Models\BugReport::pending()->count();
     @endphp
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
@@ -65,6 +66,24 @@
             <p class="text-xl font-bold text-text relative z-10 pt-2">{{ $lastModified ? $lastModified->updated_at->format('d/m/Y H:i') : '—' }}</p>
         </div>
     </div>
+
+    @if($pendingBugReports > 0)
+    <div class="glass-panel rounded-2xl p-6 mb-6 border border-amber-200/50 bg-amber-50/50">
+        <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center shrink-0">
+                <i data-lucide="bug" class="w-6 h-6"></i>
+            </div>
+            <div class="flex-1">
+                <p class="font-extrabold text-text">{{ $pendingBugReports }} signalement{{ $pendingBugReports > 1 ? 's' : '' }} de bug en attente</p>
+                <p class="text-sm text-gray-500 font-medium">Des visiteurs ont signalé des problèmes à examiner.</p>
+            </div>
+            <a href="{{ route('admin.bug-reports') }}" class="inline-flex items-center gap-2 px-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-sm font-bold shadow-sm transition-all hover:-translate-y-0.5 active:scale-95">
+                Voir les signalements
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </a>
+        </div>
+    </div>
+    @endif
 
     <div class="glass-panel rounded-2xl overflow-hidden">
         <div class="p-6 border-b border-border/50 flex items-center justify-between">
